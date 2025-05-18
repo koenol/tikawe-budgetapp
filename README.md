@@ -12,31 +12,32 @@ This application is a project for the University of Helsinki's TKT20019 - Databa
 ## Documentation
 
 ### Installation
-   **Option 1: Manual Installation**
-   Install flask library
-   ```
-   $ pip install flask
-   ```
-   Create a database and initialize the database schema
-   ```
-   $ sqlite3 database.db < schema.sql
-   ```
 
-   **Option 2: Automatic Installation**
-   
-   Run install.sh
-   
-   
-   ### Launch
-   **Option 1: Manual Launch**
-   ```
-   $ flask run
-   ```
-   
-   **Option 2: Automatic Launch**
+**Option 1: Manual Installation**
+Install flask library
 
-   Run app.sh
+```
+$ pip install flask
+```
 
+Create a database and initialize the database schema
 
+```
+$ python install.py
+```
 
+**Option 2: Automatic Installation**
 
+Run install.sh
+
+### Launch
+
+**Option 1: Manual Launch**
+
+```
+$ flask run
+```
+
+**Option 2: Automatic Launch**
+
+Run app.sh
