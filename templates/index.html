@@ -2,10 +2,25 @@
 <html>
     <head>
         <title>Login</title>
+        <link rel="stylesheet" href="/static/main.css" />
     </head>
 
     <body>
-        <h1>Login page</h1>
-        <p>Welcome, nothing to see here yet!</p>
+        <h1>Simple Budget App</h1>
+        <form action="/login" method="post">
+            <p>
+                <label for="username">Username</label>: <br />
+                <input type="text" , name="username" , id="username" />
+            </p>
+            <p>
+                <label for="password">Password</label>: <br />
+                <input type="password" name="password" id="password" />
+            </p>
+            <input type="submit" , value="Login" />
+        </form>
+        <br />
+        <hr style="width: 15%" />
+        <br />
+        <input type="submit" , value="Register New Account" />
     </body>
 </html>
