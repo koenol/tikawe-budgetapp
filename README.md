@@ -17,10 +17,9 @@ This application is a project for the University of Helsinki's TKT20019 - Databa
    ```
    $ pip install flask
    ```
-   Create the database tables & insert the initial data (schemas)
+   Create a database and initialize the database schema
    ```
    $ sqlite3 database.db < schema.sql
-   $ sqlite3 database.db < init.sql
    ```
 
    **Option 2: Automatic Installation**
