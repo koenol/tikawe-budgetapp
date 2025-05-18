@@ -10,7 +10,7 @@ CREATE TABLE transactions (
     amount INTEGER,
     transaction_type TEXT,
     transaction_message TEXT,
-    date DATE
+    date TEXT
 ); 
 
 CREATE TABLE balance (
