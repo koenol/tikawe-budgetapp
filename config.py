@@ -1,0 +1,1 @@
+secret_key = "IzUcc38ud2ZFU7tZO5NizmptA6hmd4C2"
