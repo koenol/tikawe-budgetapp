@@ -1,5 +1,8 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, request, redirect, flash
+from werkzeug.security import generate_password_hash
+import sqlite3
+import db
 
 app = Flask(__name__)
 
@@ -10,3 +13,4 @@ def index():
 @app.route("/register")
 def register():
     render_template("register.html")
+
