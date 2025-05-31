@@ -12,9 +12,9 @@ def index():
 
 @app.route("/register")
 def register():
-    render_template("register.html")
+    return render_template("register.html")
 
-@app.route("/create", method=["POST"])
+@app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
     password1 = request.form["password1"]
