@@ -20,7 +20,14 @@ def create():
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        flash("VIRHE: Passwords do not match")
-        return redirect("/register")
+        return "Passwords do not match"
 
+    password_hashed = generate_password_hash(password1)
+
+    try:
+        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
+        db.execute(sql, [username, password_hashed])
+    except sqlite3.IntegrityError:
+        return "Something went wrong?"
+    
     return redirect("/")
