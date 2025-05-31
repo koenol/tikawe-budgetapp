@@ -1,13 +1,13 @@
-# Simple Budget App
+# Budget Monitor
 
 This application is a project for the University of Helsinki's TKT20019 - Databases and Web Programming course Summer/2025.
 
 ## Application features
 
 -   Users can log in and out, and create a new user profile.
--   Users can add income and expense transactions to their account.
--   Users can track their current balance and recent changes.
--   Users can modify their existing transactions.
+-   Users can create new projects, track the project budget and manage project visibility.
+-   Users can add income and expense transactions. Transactions must be assigned to a project.
+-   Users can view or edit project transactions they have permission for.
 
 ## Documentation
 
