@@ -25,7 +25,10 @@
         <br />
         <hr style="width: 15%" />
         <br />
-        {% else %}
+        <p>Active Projects:</p>
+        {% for item in items %}
+        <a href="/item/{{ item }}">{{ item }}</a><br />
+        {% endfor %} {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>

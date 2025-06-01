@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 import db
 import config
+import items
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -14,7 +15,11 @@ def index():
 
 @app.route("/main")
 def main():
-    return render_template("main.html")
+    sql2 = "SELECT id FROM users WHERE username = ?"
+    username = session.get("username")
+    user_id = db.query(sql2, [username])
+    visible_projects = items.get_all_projects(user_id[0]["id"])
+    return render_template("main.html", items=visible_projects)
 
 @app.route("/projects")
 def projects():
@@ -34,9 +39,14 @@ def addproject():
     try:
         sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
         sql2 = "SELECT id FROM users WHERE username = ?"
+        sql3 = "SELECT project_id FROM projects WHERE project_name = ?"
+        sql4 = "INSERT INTO project_visibility (user_id, project_id, view_permission) VALUES (?, ?, ?)"
         username = session.get("username")
         user_id = db.query(sql2, [username])
         db.execute(sql, [projectname, projectbalance, user_id[0]["id"]])
+        project_id = db.query(sql3, [projectname])[0]["project_id"]
+        db.execute(sql4, [user_id[0]["id"], project_id, True])
+
     except sqlite3.IntegrityError:
         return "Something went wrong?"
     
