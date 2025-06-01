@@ -5,18 +5,35 @@
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
-    <body class="projects-page">
+    <body class="main-view">
         <h1>Projects - Add New Project</h1>
         {% if session.username %}
         <p>Logged in as: {{ session.username }}</p>
-
-        <div class="button-group">
+        <div class="button-group-main-menu">
+            <form action="/main" method="get">
+                <button type="submit">Main</button>
+            </form>
+            <form action="/projects" method="get">
+                <button class="button-selected" button type="submit">
+                    Projects
+                </button>
+            </form>
+            <form action="/logout" method="get">
+                <button type="submit">Log out</button>
+            </form>
+        </div>
+        <br />
+        <hr style="width: 15%" />
+        <br />
+        <div class="button-group-main-menu">
             <form action="/projects" method="get">
                 <button type="submit">View</button>
             </form>
 
             <form action="/projects/add" method="get">
-                <button type="submit">Add</button>
+                <button class="button-selected" button type="submit">
+                    Add
+                </button>
             </form>
 
             <form action="/projects/manage" method="get">
@@ -24,7 +41,7 @@
             </form>
         </div>
         <br />
-        <hr style="width: 15%" />
+        <hr style="width: 25%" />
         <br />
 
         <form action="/projects/addproject" method="post">

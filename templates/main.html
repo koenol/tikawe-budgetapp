@@ -5,13 +5,26 @@
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
-    <body>
+    <body class="main-view">
         <h1>Simple Budget App - Main View</h1>
         {% if session.username %}
         <p>Logged in as: {{ session.username }}</p>
-        <form action="/projects" method="get">
-            <button type="submit">Projects</button>
-        </form>
+        <div class="button-group-main-menu">
+            <form action="/main" method="get">
+                <button class="button-selected" button type="submit">
+                    Main
+                </button>
+            </form>
+            <form action="/projects" method="get">
+                <button type="submit">Projects</button>
+            </form>
+            <form action="/logout" method="get">
+                <button type="submit">Log out</button>
+            </form>
+        </div>
+        <br />
+        <hr style="width: 15%" />
+        <br />
         {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}

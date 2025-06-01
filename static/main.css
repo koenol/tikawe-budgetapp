@@ -2,8 +2,13 @@ body {
     text-align: center;
 }
 
-.projects-page .button-group {
+.main-view .button-group-main-menu {
     display: flex;
     gap: 10px;
     justify-content: center;
+}
+
+.main-view .button-selected {
+    color: whitesmoke;
+    background-color: #222;
 }
