@@ -12,6 +12,33 @@ app.secret_key = config.secret_key
 def index():
     return render_template("index.html")
 
+@app.route("/main")
+def main():
+    return render_template("main.html")
+
+@app.route("/projects")
+def projects():
+    return render_template("projects.html")
+
+@app.route("/projects/add")
+def add_projects():
+    return render_template("new_project.html")
+
+@app.route("/projects/addproject", methods=["GET", "POST"])
+def addproject():
+
+    if request.method == "POST":
+        projectname = request.form["project-name"]
+        projectbalance = request.form["project-balance"]
+
+    try:
+        sql = "INSERT INTO projects (project_name, balance) VALUES (?, ?)"
+        db.execute(sql, [projectname, projectbalance])
+    except sqlite3.IntegrityError:
+        return "Something went wrong?"
+    
+    return redirect("/projects")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -24,7 +51,7 @@ def login():
 
         if check_password_hash(password_hash, password):
             session["username"] = username
-            return render_template("main.html")
+            return redirect("/main")
 
 @app.route("/logout")
 def logout():

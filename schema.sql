@@ -15,7 +15,8 @@ CREATE TABLE transactions (
 ); 
 
 CREATE TABLE projects (
-    project_id INTEGER PRIMARY KEY
+    project_id INTEGER PRIMARY KEY,
+    project_name TEXT,
     project_owner_id INTEGER,
     balance INTEGER,
     total_transactions INTEGER

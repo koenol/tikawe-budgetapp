@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple Budget App - Projects</title>
+        <link rel="stylesheet" href="../static/main.css" />
+    </head>
+
+    <body class="projects-page">
+        <h1>Projects - Add New Project</h1>
+        {% if session.username %}
+        <p>Logged in as: {{ session.username }}</p>
+
+        <div class="button-group">
+            <form action="/projects" method="get">
+                <button type="submit">View</button>
+            </form>
+
+            <form action="/projects/add" method="get">
+                <button type="submit">Add</button>
+            </form>
+
+            <form action="/projects/manage" method="get">
+                <button type="submit">Manage</button>
+            </form>
+        </div>
+        <br />
+        <hr style="width: 15%" />
+        <br />
+
+        <form action="/projects/addproject" method="post">
+            <p>
+                <label for="project-name">Project Name</label>: <br />
+                <input type="text" name="project-name" id="project-name" />
+            </p>
+            <p>
+                <label for="project-balance">Set Project Balance</label>: <br />
+                <input
+                    type="text"
+                    name="project-balance"
+                    id="project-balance"
+                />
+            </p>
+            <p>Project Owner: //For now the creator</p>
+            <input type="submit" value="Create" />
+        </form>
+
+        {% else %}
+        <p>You must be logged in to see main view.</p>
+        {% endif %}
+    </body>
+</html>

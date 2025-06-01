@@ -9,6 +9,9 @@
         <h1>Simple Budget App - Main View</h1>
         {% if session.username %}
         <p>Logged in as: {{ session.username }}</p>
+        <form action="/projects" method="get">
+            <button type="submit">Projects</button>
+        </form>
         {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
