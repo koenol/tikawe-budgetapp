@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Main View</title>
+        <link rel="stylesheet" href="../static/main.css" />
+    </head>
+
+    <body>
+        <h1>Simple Budget App - Main View</h1>
+        {% if session.username %}
+        <p>Logged in as: {{ session.username }}</p>
+        {% else %}
+        <p>You must be logged in to see main view.</p>
+        {% endif %}
+    </body>
+</html>

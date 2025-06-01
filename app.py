@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, flash
+from flask import render_template, request, redirect, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 import db
@@ -23,8 +23,13 @@ def login():
         password_hash = db.query(sql, [username])[0][0]
 
         if check_password_hash(password_hash, password):
-            return "Login Success!"
+            session["username"] = username
+            return render_template("main.html")
 
+@app.route("/logout")
+def logout():
+    del session["username"]
+    return redirect("/")
 
 @app.route("/register")
 def register():
