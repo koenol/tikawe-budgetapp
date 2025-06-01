@@ -38,6 +38,14 @@ def delete_project():
         items.delete_project_by_name(projectname)
         return redirect("/projects/manage")      
 
+@app.route("/projects/update_balance", methods=["POST"])
+def update_balance():
+    if request.method == "POST":
+        newbalance = request.form["newbalance"]
+        projectname = request.form["projectname"]
+        items.update_balance_by_name(projectname, newbalance)
+        return redirect("/projects/manage")
+
 @app.route("/projects/search", methods=["GET", "POST"])
 def search_project():
     if request.method == "POST":

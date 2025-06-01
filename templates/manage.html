@@ -55,7 +55,13 @@
         {% for item in items %}
         <p><b>Project Name: </b> {{ item[0] }}</p>
         <p><b>Project Balance: </b>{{ item[1] }}</p>
-
+        <form action="/projects/update_balance" method="post">
+            <p>
+                <input type="hidden" name="projectname" value="{{ item[0] }}" />
+                <input type="text" name="newbalance" id="newbalance" />
+                <button type="submit">Set New Balance</button>
+            </p>
+        </form>
         <form action="/projects/delete" method="post">
             <input type="hidden" name="projectname" value="{{ item[0] }}" />
             <button type="submit">Delete</button>

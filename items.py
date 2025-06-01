@@ -15,3 +15,7 @@ def search_project_by_name(user_id, projectname):
 def delete_project_by_name(projectname):
     sql = "DELETE FROM projects WHERE project_name = ?"
     db.execute(sql, [projectname])
+
+def update_balance_by_name(projectname, newbalance):
+    sql = "UPDATE projects SET balance = ? WHERE project_name = ?"
+    db.execute(sql, [newbalance, projectname])
