@@ -29,9 +29,35 @@ def projects():
     visible_projects = items.get_all_projects(user_id[0]["id"])
     return render_template("projects.html", items=visible_projects)
 
+@app.route("/projects/delete", methods=["POST"])
+def delete_project():
+    if request.method == "POST":
+        projectname = request.form["projectname"]
+        print(projectname)
+
+        items.delete_project_by_name(projectname)
+        return redirect("/projects/manage")      
+
+@app.route("/projects/search", methods=["GET", "POST"])
+def search_project():
+    if request.method == "POST":
+        projectname = request.form["projectname"]
+
+        sql2 = "SELECT id FROM users WHERE username = ?"
+        username = session.get("username")
+        user_id = db.query(sql2, [username])
+
+        project_data = items.search_project_by_name(user_id[0]["id"], projectname)
+
+        return render_template("manage.html", items=project_data)
+    
 @app.route("/projects/add")
 def add_projects():
     return render_template("new_project.html")
+
+@app.route("/projects/manage")
+def manage_projects():
+    return render_template("manage.html")
 
 @app.route("/projects/addproject", methods=["GET", "POST"])
 def addproject():

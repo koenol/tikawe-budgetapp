@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple Budget App - Projects</title>
+        <link rel="stylesheet" href="../static/main.css" />
+    </head>
+
+    <body class="main-view">
+        <h1>Projects - Manage Projects</h1>
+        {% if session.username %}
+        <p>Logged in as: {{ session.username }}</p>
+        <div class="button-group-main-menu">
+            <form action="/main" method="get">
+                <button type="submit">Main</button>
+            </form>
+            <form action="/projects" method="get">
+                <button class="button-selected" button type="submit">
+                    Projects
+                </button>
+            </form>
+            <form action="/logout" method="get">
+                <button type="submit">Log out</button>
+            </form>
+        </div>
+        <br />
+        <hr style="width: 15%" />
+        <br />
+        <div class="button-group-main-menu">
+            <form action="/projects" method="get">
+                <button type="submit">View</button>
+            </form>
+
+            <form action="/projects/add" method="get">
+                <button type="submit">Add</button>
+            </form>
+
+            <form action="/projects/manage" method="get">
+                <button class="button-selected" button type="submit">
+                    Manage
+                </button>
+            </form>
+        </div>
+        <br />
+        <hr style="width: 25%" />
+        <br />
+
+        <form action="/projects/search" method="post">
+            <p>
+                <label for="projectname">Project Name</label>: <br />
+                <input type="text" name="projectname" id="projectname" />
+            </p>
+
+            <input type="submit" value="Search" />
+        </form>
+        {% for item in items %}
+        <p><b>Project Name: </b> {{ item[0] }}</p>
+        <p><b>Project Balance: </b>{{ item[1] }}</p>
+
+        <form action="/projects/delete" method="post">
+            <input type="hidden" name="projectname" value="{{ item[0] }}" />
+            <button type="submit">Delete</button>
+        </form>
+        {% endfor %} {% else %}
+        <p>You must be logged in to see main view.</p>
+        {% endif %}
+    </body>
+</html>
