@@ -32,8 +32,11 @@ def addproject():
         projectbalance = request.form["project-balance"]
 
     try:
-        sql = "INSERT INTO projects (project_name, balance) VALUES (?, ?)"
-        db.execute(sql, [projectname, projectbalance])
+        sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
+        sql2 = "SELECT id FROM users WHERE username = ?"
+        username = session.get("username")
+        user_id = db.query(sql2, [username])
+        db.execute(sql, [projectname, projectbalance, user_id[0]["id"]])
     except sqlite3.IntegrityError:
         return "Something went wrong?"
     
