@@ -23,7 +23,11 @@ def main():
 
 @app.route("/projects")
 def projects():
-    return render_template("projects.html")
+    sql2 = "SELECT id FROM users WHERE username = ?"
+    username = session.get("username")
+    user_id = db.query(sql2, [username])
+    visible_projects = items.get_all_projects(user_id[0]["id"])
+    return render_template("projects.html", items=visible_projects)
 
 @app.route("/projects/add")
 def add_projects():
