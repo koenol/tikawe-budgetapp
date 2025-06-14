@@ -1,13 +1,55 @@
+from flask import session
 import db
 
+
+def get_user_id():
+    sql = "SELECT id FROM users WHERE username = ?"
+    username = session.get("username")
+    user_id = db.query(sql, [username])
+    return user_id[0]["id"]
+
+def create_project(projectname, projectbalance, user_id):
+    sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
+    db.execute(sql, [projectname, projectbalance, user_id])
+
+def create_user(username, password_hash):
+    sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
+    db.execute(sql, [username, password_hash])
+
+def add_permissions(project_id, user_id, view_permission, edit_permission):
+    sql = "INSERT INTO project_visibility (user_id, project_id, view_permission, edit_permission) VALUES (?, ?, ?, ?)"
+    db.execute(sql, [user_id, project_id, view_permission, edit_permission])
+
 def get_all_projects(user_id):
-    sql = "SELECT project_name FROM projects WHERE project_id IN (SELECT project_id FROM project_visibility WHERE user_id = ? AND view_permission = TRUE)"
+    sql = """
+    SELECT project_name
+    FROM projects
+    WHERE project_id IN (
+        SELECT project_id
+        FROM project_visibility
+        WHERE user_id = ? AND view_permission = TRUE
+    )
+    """
     visible_projects = db.query(sql, [user_id])
     project_names = [row["project_name"] for row in visible_projects]
     return project_names
 
+def get_project_id_by_name(projectname):
+    sql = "SELECT project_id FROM projects WHERE project_name = ?"
+    result = db.query(sql, [projectname])
+    return result[0]["project_id"]
+
 def search_project_by_name(user_id, projectname):
-    sql = "SELECT project_name, balance FROM projects WHERE project_name = ? AND project_id IN (SELECT project_id FROM project_visibility WHERE user_id = ? AND view_permission = TRUE)"
+    sql = """
+    SELECT project_name, balance
+    FROM projects
+    WHERE project_name = ?
+    AND project_id IN (
+        SELECT project_id
+        FROM project_visibility
+        WHERE user_id = ? AND view_permission = TRUE
+    )
+    """
     search_result = db.query(sql, [projectname, user_id])
     project_info = [(row["project_name"], row["balance"]) for row in search_result]
     return project_info

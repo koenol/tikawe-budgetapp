@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import sqlite3
 import db
 import config
-import items
+import service
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -15,26 +15,20 @@ def index():
 
 @app.route("/main")
 def main():
-    sql2 = "SELECT id FROM users WHERE username = ?"
-    username = session.get("username")
-    user_id = db.query(sql2, [username])
-    visible_projects = items.get_all_projects(user_id[0]["id"])
+    user_id = service.get_user_id()
+    visible_projects = service.get_all_projects(user_id)
     return render_template("main.html", items=visible_projects)
 
 @app.route("/projects")
 def projects():
-    sql2 = "SELECT id FROM users WHERE username = ?"
-    username = session.get("username")
-    user_id = db.query(sql2, [username])
-    visible_projects = items.get_all_projects(user_id[0]["id"])
+    user_id = service.get_user_id()
+    visible_projects = service.get_all_projects(user_id)
     return render_template("projects.html", items=visible_projects)
 
 @app.route("/projects/delete", methods=["POST"])
 def delete_project():
     projectname = request.form["projectname"]
-    print(projectname)
-
-    items.delete_project_by_name(projectname)
+    service.delete_project_by_name(projectname)
     return redirect("/projects/manage")
 
 @app.route("/projects/update_balance", methods=["POST"])
@@ -42,20 +36,15 @@ def update_balance():
     if request.method == "POST":
         newbalance = request.form["newbalance"]
         projectname = request.form["projectname"]
-        items.update_balance_by_name(projectname, newbalance)
+        service.update_balance_by_name(projectname, newbalance)
         return redirect("/projects/manage")
 
 @app.route("/projects/search", methods=["GET", "POST"])
 def search_project():
     if request.method == "POST":
         projectname = request.form["projectname"]
-
-        sql2 = "SELECT id FROM users WHERE username = ?"
-        username = session.get("username")
-        user_id = db.query(sql2, [username])
-
-        project_data = items.search_project_by_name(user_id[0]["id"], projectname)
-
+        user_id = service.get_user_id()
+        project_data = service.search_project_by_name(user_id, projectname)
         return render_template("manage.html", items=project_data)
     
 @app.route("/projects/add")
@@ -73,20 +62,12 @@ def addproject():
     projectname = request.form["project-name"]
     projectbalance = request.form["project-balance"]
 
-    try:
-        sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
-        sql2 = "SELECT id FROM users WHERE username = ?"
-        sql3 = "SELECT project_id FROM projects WHERE project_name = ?"
-        sql4 = "INSERT INTO project_visibility (user_id, project_id, view_permission) VALUES (?, ?, ?)"
-        username = session.get("username")
-        user_id = db.query(sql2, [username])
-        db.execute(sql, [projectname, projectbalance, user_id[0]["id"]])
-        project_id = db.query(sql3, [projectname])[0]["project_id"]
-        db.execute(sql4, [user_id[0]["id"], project_id, True])
+    user_id = service.get_user_id()
+    project_id = service.get_project_id_by_name(projectname)
 
-    except sqlite3.IntegrityError:
-        return "Something went wrong?"
-    
+    service.create_project(projectname, projectbalance, user_id)
+    service.add_permissions(project_id, user_id, True, True)
+
     return redirect("/projects")
 
 @app.route("/login", methods=["GET","POST"])
@@ -124,11 +105,6 @@ def create():
         return "Passwords do not match"
 
     password_hashed = generate_password_hash(password1)
+    service.create_user(username, password_hashed)
 
-    try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hashed])
-    except sqlite3.IntegrityError:
-        return "Something went wrong?"
-    
     return redirect("/")
