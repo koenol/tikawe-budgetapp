@@ -9,8 +9,9 @@ Huomiot:
     3. Käyttäjä pystyy muokkaamaan tietokohteita (Login -> Projects -> Manage -> Search -> Set New Balance)
     4. Käyttäjä pystyy poistamaan tietokohteita (Login -> Projects -> Manage -> Search -> Delete)
     5. Käyttäjä näkee sovellukseen lisätyt tietokohteet ja pystyy etsimään niitä (Login -> Projects -> Manage -> Search)
-       Applikaation on tällä hetkellä hyvin alkutekijöissään ja vain perustoimintoja testattu.
-
+- Applikaation on tällä hetkellä hyvin alkutekijöissään ja vain perustoimintoja testattu.
+- Virheentarkistusta ei tehdä tällä hetkellä juuri ollenkaan ja toimintoja ei ole juuri rajoitettu.
+  
 # Budget Monitor
 
 This application is a project for the University of Helsinki's TKT20019 - Databases and Web Programming course Summer/2025.
