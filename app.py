@@ -89,8 +89,11 @@ def addproject():
     
     return redirect("/projects")
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET","POST"])
 def login():
+
+    if request.method == "GET":
+        return render_template("login.html", next_page=request.referrer)
 
     if request.method == "POST":
         username = request.form["username"]
