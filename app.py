@@ -31,12 +31,11 @@ def projects():
 
 @app.route("/projects/delete", methods=["POST"])
 def delete_project():
-    if request.method == "POST":
-        projectname = request.form["projectname"]
-        print(projectname)
+    projectname = request.form["projectname"]
+    print(projectname)
 
-        items.delete_project_by_name(projectname)
-        return redirect("/projects/manage")      
+    items.delete_project_by_name(projectname)
+    return redirect("/projects/manage")
 
 @app.route("/projects/update_balance", methods=["POST"])
 def update_balance():
@@ -67,12 +66,12 @@ def add_projects():
 def manage_projects():
     return render_template("manage.html")
 
-@app.route("/projects/addproject", methods=["GET", "POST"])
+@app.route("/projects/addproject", methods=["POST"])
 def addproject():
 
-    if request.method == "POST":
-        projectname = request.form["project-name"]
-        projectbalance = request.form["project-balance"]
+
+    projectname = request.form["project-name"]
+    projectbalance = request.form["project-balance"]
 
     try:
         sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
