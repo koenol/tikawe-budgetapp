@@ -1,11 +1,5 @@
 from flask import session
 import db
-import sqlite3
-
-def check_username_exists(username):
-    sql = "SELECT id FROM users WHERE username = ?"
-    result = db.query(sql, [username])
-    return result
 
 def get_user_id():
     sql = "SELECT id FROM users WHERE username = ?"

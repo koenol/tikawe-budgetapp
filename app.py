@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, session, flash
+from flask import render_template, request, redirect, session, flash, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 import db
 import config
@@ -98,6 +98,8 @@ def register():
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
+    if not username or len(username) > 16:
+        abort(403)
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
@@ -105,10 +107,11 @@ def create():
         flash("Passwords do not match")
         return redirect("/register")
 
-    elif not service.check_username_exists(username):
-        password_hashed = generate_password_hash(password1)
+    password_hashed = generate_password_hash(password1)
+
+    try:
         service.create_user(username, password_hashed)
-    else:
+    except:
         flash("Username already exists")
         return redirect("/register")
 
