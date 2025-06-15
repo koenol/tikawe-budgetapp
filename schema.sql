@@ -28,7 +28,3 @@ CREATE TABLE project_visibility (
     view_permission BOOLEAN NOT NULL DEFAULT FALSE,
     edit_permission BOOLEAN NOT NULL DEFAULT FALSE
 );
-
-CREATE TABLE classes (
-    class_name TEXT UNIQUE
-)
