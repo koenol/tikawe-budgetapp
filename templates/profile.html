@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Simple Budget App - Projects</title>
+        <title>Simple Budget App - User Profile</title>
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
     <body class="main-view">
-        <h1>Projects - Manage Projects</h1>
+        <h1>Projects - User Profile</h1>
         {% if session.username %}
-        <p>Logged in as: {{ session.username }}</p>
+        <p>
+            Logged in as:
+            <a href="/profile/{{ session.user_id }}">{{ session.username }}</a>
+        </p>
         <div class="button-group-main-menu">
             <form action="/main" method="get">
                 <button type="submit">Main</button>
             </form>
             <form action="/projects" method="get">
-                <button class="button-selected" button type="submit">
-                    Projects
-                </button>
+                <button type="submit">Projects</button>
             </form>
             <form action="/logout" method="get">
                 <button type="submit">Log out</button>
@@ -35,9 +36,7 @@
             </form>
 
             <form action="/projects/manage" method="get">
-                <button class="button-selected" button type="submit">
-                    Manage
-                </button>
+                <button type="submit">Manage</button>
             </form>
         </div>
         <br />
@@ -45,12 +44,11 @@
         <br />
         <div class="profile">
             <h2>User Profile</h2>
-            <p><b>Username:</b> {{ session.username }}</p>
+            <p><b>Username:</b> {{ user.username }}</p>
             <p><b>Real Name:</b> <br /></p>
 
             <p><b>Activate Projects:</b></p>
         </div>
-        <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>
 </html>

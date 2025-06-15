@@ -12,6 +12,11 @@ app.secret_key = config.secret_key
 def index():
     return render_template("index.html")
 
+@app.route("/profile/<int:user_id>")
+def profile(user_id):
+    user_data = service.get_user_data(user_id)
+    return render_template("profile.html", user=user_data)
+
 @app.route("/main")
 def main():
     user_id = service.get_user_id()
@@ -93,6 +98,7 @@ def login():
 
         if service.validate_user(username, password):
             session["username"] = username
+            session["user_id"] = service.get_user_id()
             return redirect("/main")
         else:
             flash("Invalid username or password")

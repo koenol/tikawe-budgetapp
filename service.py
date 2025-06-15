@@ -2,6 +2,13 @@ from flask import session
 import db
 from werkzeug.security import check_password_hash
 
+def get_user_data(user_id):
+    sql = "SELECT username  FROM users WHERE id = ?"
+    result = db.query(sql, [user_id])
+    if not result:
+        return None
+    return result[0]
+
 def validate_user(username, password):
     sql = "SELECT password_hash FROM users WHERE username = ?"
     result = db.query(sql, [username])

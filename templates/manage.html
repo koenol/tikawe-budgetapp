@@ -8,7 +8,10 @@
     <body class="main-view">
         <h1>Projects - Manage Projects</h1>
         {% if session.username %}
-        <p>Logged in as: {{ session.username }}</p>
+        <p>
+            Logged in as:
+            <a href="/profile/{{ session.user_id }}">{{ session.username }}</a>
+        </p>
         <div class="button-group-main-menu">
             <form action="/main" method="get">
                 <button type="submit">Main</button>
