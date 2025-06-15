@@ -53,6 +53,17 @@
             <p><b>Balance:</b> {{ project.balance }}<br /></p>
             <p><b>Project Status:</b></p>
             <br />
+            <ul>
+                {% for transaction in project_transactions %}
+                <li>
+                    Amount: {{ transaction.amount }}
+                    Type: {{ transaction.transaction_type }}
+                    Date: {{ transaction.date }}
+                </li>
+                {% else %}
+                    <li>No transactions found.</li>
+                {% endfor %}
+            </ul>
             {% if session.user_id in project_edit_rights %}
             </p>
             <div class="create-transaction-form">

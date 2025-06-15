@@ -16,14 +16,11 @@ def index():
 def create_transaction():
     project_id = int(request.form["project_id"])
     amount = int(request.form["amount"])
-    type = request.form["type"]
+    transaction_type = request.form["type"]
     user_id = int(request.form["user_id"])
-    print("?")
-
 
     try:
-        print("?")
-        service.create_transaction(project_id, amount, type, user_id)
+        service.create_transaction(project_id, amount, transaction_type, user_id)
     except:
         flash("Failed to create transaction")
         return redirect(f"/projects/{project_id}")
@@ -59,7 +56,8 @@ def project(project_id):
         project_data = service.get_project_data(project_id)
         project_owner = service.get_user_data(project_data[3])
         project_edit_rights = service.get_edit_permissions(project_id)
-        return render_template("project.html", project=project_data, project_owner=project_owner, project_edit_rights=project_edit_rights)
+        project_transactions = service.get_all_transactions(project_id)
+        return render_template("project.html", project=project_data, project_owner=project_owner, project_edit_rights=project_edit_rights, project_transactions=project_transactions)
     else:
         abort(403)
 

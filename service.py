@@ -2,6 +2,14 @@ from flask import session, abort
 import db
 from werkzeug.security import check_password_hash
 
+def get_all_transactions(project_id):
+    sql = """
+    SELECT transaction_id, amount, transaction_type, user_id, date
+    FROM transactions
+    WHERE project_id = ?
+    """
+    return db.query(sql, [project_id])
+
 def create_transaction(project_id, amount, type, user_id):
     sql = """
     INSERT INTO transactions (project_id, amount, transaction_type, user_id, date)
