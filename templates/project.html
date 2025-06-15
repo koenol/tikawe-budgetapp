@@ -53,15 +53,42 @@
             <p><b>Balance:</b> {{ project.balance }}<br /></p>
             <p><b>Project Status:</b></p>
             <br />
-            <ul>
+            <ul id="all-transactions-list">
+                <h3>All Transactions</h3>
                 {% for transaction in project_transactions %}
                 <li>
                     Amount: {{ transaction.amount }}
                     Type: {{ transaction.transaction_type }}
                     Date: {{ transaction.date }}
                 </li>
-                {% else %}
-                    <li>No transactions found.</li>
+                {% endfor %}
+
+                <h3>Income Transactions</h3>
+            </ul>
+            <ul id="income-transactions-list">
+                {% for transaction in project_transactions %}
+                    {% if transaction.transaction_type == 'income' %}
+                        {% set found_income = true %}
+                        <li>
+                            Amount: {{ transaction.amount }}
+                            Type: {{ transaction.transaction_type }}
+                            Date: {{ transaction.date }}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <h3>Expense Transactions</h3>
+            <ul id="expense-transactions-list">
+                {% for transaction in project_transactions %}
+                    {% if transaction.transaction_type == 'expense' %}
+                        {% set found_expense = true %}
+                        <li>
+                            Amount: {{ transaction.amount }}
+                            Type: {{ transaction.transaction_type }}
+                            Date: {{ transaction.date }}
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
             {% if session.user_id in project_edit_rights %}
