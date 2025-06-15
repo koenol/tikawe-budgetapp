@@ -1,16 +1,12 @@
-# Välipalautus 2
+# Välipalautus 3
 
 Huomiot:
 
 -   Applikaation featureita ei ole päivitetty.
--   Applikaatio täyttää suurimman osan 2. välipalautukseen vaadittavattavasti kriteereistä.
-    1. Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään (Register New User -> Login)
-    2. Käyttäjä pystyy lisäämään tietokohteita (Login -> Projects -> Add -> Create)
-    3. Käyttäjä pystyy muokkaamaan tietokohteita (Login -> Projects -> Manage -> Search -> Set New Balance)
-    4. Käyttäjä pystyy poistamaan tietokohteita (Login -> Projects -> Manage -> Search -> Delete)
-    5. Käyttäjä näkee sovellukseen lisätyt tietokohteet ja pystyy etsimään niitä (Login -> Projects -> Manage -> Search)
-- Applikaation on tällä hetkellä hyvin alkutekijöissään ja vain perustoimintoja testattu.
-- Virheentarkistusta ei tehdä tällä hetkellä juuri ollenkaan ja toimintoja ei ole juuri rajoitettu.
+-   Applikaatio täyttää suurimman osan 3. välipalautukseen vaadittavattavasti kriteereistä, tosin hyvin heikosti koska suurin osa ajasta meni tällä viikolla koodin siistimiseen.
+-   Virheentarkistusta vähän lisätty edelliseen viikkoon, mutta ei vielä täydellinen.
+-   Search-funktio edelleen aika kehno, ei muutoksia tehty.
+-   Paljon vielä tekemättä. Onneksi on vielä aikaa!
   
 # Budget Monitor
 
