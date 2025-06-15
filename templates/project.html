@@ -53,7 +53,25 @@
             <p><b>Balance:</b> {{ project.balance }}<br /></p>
             <p><b>Project Status:</b></p>
             <br />
-            {% if session.user_id == project.project_owner_id %}
+            {% if session.user_id in project_edit_rights %}
+            </p>
+            <div class="create-transaction-form">
+                <form action="/create_transaction" method="post">
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" step="1" required />
+                    <br />
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" required>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                    <br />
+                    <input type="hidden" name="project_id" value="{{ project.project_id }}">
+                    <input type="hidden" name="user_id" value="{{ session.user_id }}">
+                    <button type="submit">Create Transaction</button>
+                </form>
+            </div>
+            {% endif %} {% if session.user_id == project.project_owner_id %}
             <div class="add-permission-form">
                 <form action="/add_view_permission" method="post">
                     <input

@@ -12,6 +12,24 @@ app.secret_key = config.secret_key
 def index():
     return render_template("index.html")
 
+@app.route("/create_transaction", methods=["POST"])
+def create_transaction():
+    project_id = int(request.form["project_id"])
+    amount = int(request.form["amount"])
+    type = request.form["type"]
+    user_id = int(request.form["user_id"])
+    print("?")
+
+
+    try:
+        print("?")
+        service.create_transaction(project_id, amount, type, user_id)
+    except:
+        flash("Failed to create transaction")
+        return redirect(f"/projects/{project_id}")
+
+    return redirect(f"/projects/{project_id}")
+
 @app.route("/add_view_permission", methods=["POST"])
 def add_view_permissions():
 
@@ -28,9 +46,6 @@ def add_view_permissions():
         return redirect("/projects/manage")
 
     try:
-        print(f"Project_ID: {project_id}, User_ID: {user_id}")
-        print(type(project_id))
-        print(type(user_id))
         service.add_view_permission(project_id, user_id)
     except:
         flash("Failed to add permissions for the project")
@@ -43,7 +58,8 @@ def project(project_id):
     if service.check_view_permission(project_id):
         project_data = service.get_project_data(project_id)
         project_owner = service.get_user_data(project_data[3])
-        return render_template("project.html", project=project_data, project_owner=project_owner)
+        project_edit_rights = service.get_edit_permissions(project_id)
+        return render_template("project.html", project=project_data, project_owner=project_owner, project_edit_rights=project_edit_rights)
     else:
         abort(403)
 
