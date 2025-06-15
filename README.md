@@ -6,6 +6,7 @@ Huomiot:
 -   Applikaatio täyttää suurimman osan 3. välipalautukseen vaadittavattavasti kriteereistä, tosin hyvin heikosti koska suurin osa ajasta meni tällä viikolla koodin siistimiseen.
 -   Virheentarkistusta vähän lisätty edelliseen viikkoon, mutta ei vielä täydellinen.
 -   Search-funktio edelleen aika kehno, ei muutoksia tehty.
+-   Käytettävyys heikkoa ja tietoturvaa ei ole vielä täysin validoitu.
 -   Paljon vielä tekemättä. Onneksi on vielä aikaa.
 
 Nykyiset Toiminnot: 
