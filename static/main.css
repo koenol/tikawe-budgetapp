@@ -12,3 +12,7 @@ body {
     color: whitesmoke;
     background-color: #222;
 }
+
+.error {
+    color: rgb(205, 90, 90);
+}

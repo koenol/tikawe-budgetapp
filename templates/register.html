@@ -7,21 +7,31 @@
 
     <body>
         <h1>Register New Account</h1>
-
-        <form action="/create" method="post">
+        {% for message in get_flashed_messages() %}
+        <div class="error">
             <p>
-                <label for="username">Username</label>: <br />
-                <input type="text" name="username" id="username" />
+                <b>{{ message }}</b>
             </p>
-            <p>
-                <label for="password1">Password</label>: <br />
-                <input type="password" name="password1" id="password1" />
-            </p>
-            <p>
-                <label for="password2">Password Again</label>: <br />
-                <input type="password" name="password2" id="password2" />
-            </p>
-            <input type="submit" value="Register" />
+        </div>
+        {% endfor %}
+        
+        <div class="register-form-container">
+            <form action="/create" method="post">
+                <p>
+                    <label for="username">Username</label>: <br />
+                    <input type="text" name="username" id="username" />
+                </p>
+                <p>
+                    <label for="password1">Password</label>: <br />
+                    <input type="password" name="password1" id="password1" />
+                </p>
+                <p>
+                    <label for="password2">Password Again</label>: <br />
+                    <input type="password" name="password2" id="password2" />
+                </p>
+                <input type="submit" value="Register" />
+            </form>
+        </div>
         </form>
     </body>
 </html>

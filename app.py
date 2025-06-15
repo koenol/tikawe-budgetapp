@@ -1,7 +1,6 @@
 from flask import Flask
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, flash
 from werkzeug.security import check_password_hash, generate_password_hash
-import sqlite3
 import db
 import config
 import service
@@ -101,10 +100,16 @@ def create():
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
-    if password1 != password2:
-        return "Passwords do not match"
 
-    password_hashed = generate_password_hash(password1)
-    service.create_user(username, password_hashed)
+    if password1 != password2:
+        flash("Passwords do not match")
+        return redirect("/register")
+
+    elif not service.check_username_exists(username):
+        password_hashed = generate_password_hash(password1)
+        service.create_user(username, password_hashed)
+    else:
+        flash("Username already exists")
+        return redirect("/register")
 
     return redirect("/")
