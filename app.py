@@ -42,7 +42,8 @@ def add_view_permissions():
 def project(project_id):
     if service.check_view_permission(project_id):
         project_data = service.get_project_data(project_id)
-        return render_template("project.html", project=project_data)
+        project_owner = service.get_user_data(project_data[3])
+        return render_template("project.html", project=project_data, project_owner=project_owner)
     else:
         abort(403)
 
