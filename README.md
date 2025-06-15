@@ -6,9 +6,10 @@ Huomiot:
 -   Applikaatio täyttää suurimman osan 3. välipalautukseen vaadittavattavasti kriteereistä, tosin hyvin heikosti koska suurin osa ajasta meni tällä viikolla koodin siistimiseen.
 -   Virheentarkistusta vähän lisätty edelliseen viikkoon, mutta ei vielä täydellinen.
 -   Search-funktio edelleen aika kehno, ei muutoksia tehty.
--   Paljon vielä tekemättä. Onneksi on vielä aikaa!
+-   Paljon vielä tekemättä. Onneksi on vielä aikaa.
 
--   Nykyiset toiminnot:
+Nykyiset Toiminnot: 
+
 -   Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään.
 -   Käyttäjä pystyy luomaan projektin ja tapahtumia projektille, mutta tapahtumat eivät vielä tee muutoksia projektin balanceen.
 -   Projektit ovat näkyvissä vain niille käyttäjille joilla on view_permission
