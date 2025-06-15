@@ -44,24 +44,34 @@
         <hr style="width: 25%" />
         <br />
 
-        <form action="/projects/addproject" method="post">
+        <div class="new-project-form">
+            <form action="/projects/addproject" method="post">
+                <p>
+                    <label for="project-name">Project Name</label>: <br />
+                    <input type="text" name="project-name" id="project-name" />
+                </p>
+                <p>
+                    <label for="project-balance">Set Project Balance</label>:
+                    <br />
+                    <input
+                        type="text"
+                        name="project-balance"
+                        id="project-balance"
+                    />
+                </p>
+                <p>
+                    Project Owner: //For now the creator is set as project_owner
+                </p>
+                <input type="submit" value="Create" />
+            </form>
+        </div>
+        {% for message in get_flashed_messages() %}
+        <div class="error">
             <p>
-                <label for="project-name">Project Name</label>: <br />
-                <input type="text" name="project-name" id="project-name" />
+                <b>{{ message }}</b>
             </p>
-            <p>
-                <label for="project-balance">Set Project Balance</label>: <br />
-                <input
-                    type="text"
-                    name="project-balance"
-                    id="project-balance"
-                />
-            </p>
-            <p>Project Owner: //For now the creator is set as project_owner</p>
-            <input type="submit" value="Create" />
-        </form>
-
-        {% else %}
+        </div>
+        {% endfor %} {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>

@@ -66,7 +66,13 @@
             <input type="hidden" name="projectname" value="{{ item[0] }}" />
             <button type="submit">Delete</button>
         </form>
-        {% endfor %} {% else %}
+        {% for message in get_flashed_messages() %}
+        <div class="error">
+            <p>
+                <b>{{ message }}</b>
+            </p>
+        </div>
+        {% endfor %} {% endfor %} {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>

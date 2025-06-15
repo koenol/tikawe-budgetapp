@@ -59,13 +59,25 @@ def addproject():
 
 
     projectname = request.form["project-name"]
+    if not projectname:
+        flash("Project name is required")
+        return redirect("/projects/add")
     projectbalance = request.form["project-balance"]
 
     user_id = service.get_user_id()
-    project_id = service.get_project_id_by_name(projectname)
 
-    service.create_project(projectname, projectbalance, user_id)
-    service.add_permissions(project_id, user_id, True, True)
+    try:
+        service.create_project(projectname, projectbalance, user_id)
+    except:
+        flash("Project already exists or invalid input")
+        return redirect("/projects/add")
+
+    try:
+        project_id = service.get_project_id_by_name(projectname)
+        service.add_permissions(project_id, user_id, True, True)
+    except:
+        flash("Failed to add permissions for the project")
+        return redirect("/projects/add")
 
     return redirect("/projects")
 

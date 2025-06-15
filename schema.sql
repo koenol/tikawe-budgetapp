@@ -16,7 +16,7 @@ CREATE TABLE transactions (
 
 CREATE TABLE projects (
     project_id INTEGER PRIMARY KEY,
-    project_name TEXT NOT NULL,
+    project_name TEXT UNIQUE NOT NULL,
     project_owner_id INTEGER REFERENCES users NOT NULL,
     balance INTEGER NOT NULL DEFAULT 0,
     total_transactions INTEGER NOT NULL DEFAULT 0
