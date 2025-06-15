@@ -7,6 +7,13 @@ Huomiot:
 -   Virheentarkistusta vähän lisätty edelliseen viikkoon, mutta ei vielä täydellinen.
 -   Search-funktio edelleen aika kehno, ei muutoksia tehty.
 -   Paljon vielä tekemättä. Onneksi on vielä aikaa!
+
+-   Nykyiset toiminnot:
+-   Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään.
+-   Käyttäjä pystyy luomaan projektin ja tapahtumia projektille, mutta tapahtumat eivät vielä tee muutoksia projektin balanceen.
+-   Projektit ovat näkyvissä vain niille käyttäjille joilla on view_permission
+-   Käyttäjät pystyvät lisäämään transactioneita projektiin jos heillä on edit_permission
+-   Project Owner pystyy lisäämään käyttäjiä ja määrittää heille view & edit permissions
   
 # Budget Monitor
 
