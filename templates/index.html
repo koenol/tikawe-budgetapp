@@ -7,22 +7,33 @@
 
     <body>
         <h1>Simple Budget App</h1>
-        <form action="/login" method="post">
+        {% for message in get_flashed_messages() %}
+        <div class="error">
             <p>
-                <label for="username">Username</label>: <br />
-                <input type="text" , name="username" , id="username" />
+                <b>{{ message }}</b>
             </p>
-            <p>
-                <label for="password">Password</label>: <br />
-                <input type="password" name="password" id="password" />
-            </p>
-            <input type="submit" , value="Login" />
-        </form>
+        </div>
+        {% endfor %}
+        <div class="login-form">
+            <form action="/login" method="post">
+                <p>
+                    <label for="username">Username</label>: <br />
+                    <input type="text" name="username" id="username" />
+                </p>
+                <p>
+                    <label for="password">Password</label>: <br />
+                    <input type="password" name="password" id="password" />
+                </p>
+                <input type="submit" value="Login" />
+            </form>
+        </div>
         <br />
         <hr style="width: 15%" />
         <br />
-        <form action="/register" method="get">
-            <button type="submit">Register New Account</button>
-        </form>
+        <div class="register-form">
+            <form action="/register" method="get">
+                <button type="submit">Register New Account</button>
+            </form>
+        </div>
     </body>
 </html>

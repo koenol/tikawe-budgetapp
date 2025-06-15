@@ -79,12 +79,12 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = "SELECT password_hash FROM users WHERE username = ?"
-        password_hash = db.query(sql, [username])[0][0]
-
-        if check_password_hash(password_hash, password):
+        if service.validate_user(username, password):
             session["username"] = username
             return redirect("/main")
+        else:
+            flash("Invalid username or password")
+            return redirect("/")
 
 @app.route("/logout")
 def logout():
