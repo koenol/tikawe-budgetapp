@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Simple Budget App - Projects</title>
+        <title>Simple Budget App - Project Info</title>
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
     <body class="main-view">
-        <h1>Projects</h1>
+        <h1>Projects - Project Info</h1>
         {% if session.username %}
         <p>
             Logged in as:
@@ -17,9 +17,7 @@
                 <button type="submit">Main</button>
             </form>
             <form action="/projects" method="get">
-                <button class="button-selected" button type="submit">
-                    Projects
-                </button>
+                <button type="submit">Projects</button>
             </form>
             <form action="/logout" method="get">
                 <button type="submit">Log out</button>
@@ -30,9 +28,7 @@
         <br />
         <div class="button-group-main-menu">
             <form action="/projects" method="get">
-                <button class="button-selected" button type="submit">
-                    View
-                </button>
+                <button type="submit">View</button>
             </form>
 
             <form action="/projects/add" method="get">
@@ -46,13 +42,19 @@
         <br />
         <hr style="width: 25%" />
         <br />
-        <p>Active Projects:</p>
-        {% for project in projects %}
-        <a href="/projects/{{ project.project_id }}"
-            >{{ project.project_name }}</a
-        ><br />
-        {% endfor %} {% else %}
-        <p>You must be logged in to see main view.</p>
+        <div class="project">
+            <h2>Project {{ project.project_name }}</h2>
+            <p>
+                <b>Owner:</b
+                ><a href="/profile/{{ project.project_owner_id }}"
+                    >{{ project.project_owner }}</a
+                >
+            </p>
+            <p><b>Balance:</b>{{ project.balance }}<br /></p>
+            <p><b>Project Status:</b></p>
+
+            <p><b>Activate Projects:</b></p>
+        </div>
         {% endif %}
     </body>
 </html>

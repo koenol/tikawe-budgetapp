@@ -12,6 +12,14 @@ app.secret_key = config.secret_key
 def index():
     return render_template("index.html")
 
+@app.route("/projects/<int:project_id>")
+def project(project_id):
+    if service.check_view_permission(project_id):
+        project_data = service.get_project_data(project_id)
+        return render_template("project.html", project=project_data)
+    else:
+        abort(403)
+
 @app.route("/profile/<int:user_id>")
 def profile(user_id):
     user_data = service.get_user_data(user_id)
@@ -21,13 +29,13 @@ def profile(user_id):
 def main():
     user_id = service.get_user_id()
     visible_projects = service.get_all_projects(user_id)
-    return render_template("main.html", items=visible_projects)
+    return render_template("main.html", projects=visible_projects)
 
 @app.route("/projects")
 def projects():
     user_id = service.get_user_id()
     visible_projects = service.get_all_projects(user_id)
-    return render_template("projects.html", items=visible_projects)
+    return render_template("projects.html", projects=visible_projects)
 
 @app.route("/projects/delete", methods=["POST"])
 def delete_project():

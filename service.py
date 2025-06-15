@@ -1,6 +1,32 @@
-from flask import session
+from flask import session, abort
 import db
 from werkzeug.security import check_password_hash
+
+def check_view_permission(project_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        abort(404)
+
+    sql = """
+    SELECT view_permission
+    FROM project_visibility
+    WHERE user_id = ? AND project_id = ?
+    """
+    result = db.query(sql, [user_id, project_id])
+    if not result:
+        return False
+    return result[0]["view_permission"]
+
+def get_project_data(project_id):
+    sql = """
+    SELECT project_name, balance, project_owner_id
+    FROM projects
+    WHERE project_id = ?
+    """
+    result = db.query(sql, [project_id])
+    if not result:
+        return None
+    return result[0]
 
 def get_user_data(user_id):
     sql = "SELECT username  FROM users WHERE id = ?"
@@ -37,7 +63,7 @@ def add_permissions(project_id, user_id, view_permission, edit_permission):
 
 def get_all_projects(user_id):
     sql = """
-    SELECT project_name
+    SELECT project_id, project_name
     FROM projects
     WHERE project_id IN (
         SELECT project_id
@@ -46,8 +72,7 @@ def get_all_projects(user_id):
     )
     """
     visible_projects = db.query(sql, [user_id])
-    project_names = [row["project_name"] for row in visible_projects]
-    return project_names
+    return visible_projects
 
 def get_project_id_by_name(projectname):
     sql = "SELECT project_id FROM projects WHERE project_name = ?"
