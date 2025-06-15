@@ -12,6 +12,32 @@ app.secret_key = config.secret_key
 def index():
     return render_template("index.html")
 
+@app.route("/add_view_permission", methods=["POST"])
+def add_view_permissions():
+
+    project_id = int(request.form["project_id"])
+    username = request.form["username"]
+
+    if not username:
+        flash("Username is required")
+        return redirect("/projects/manage")
+
+    user_id = service.search_user_id_by_username(username)
+    if not user_id:
+        flash("User not found")
+        return redirect("/projects/manage")
+
+    try:
+        print(f"Project_ID: {project_id}, User_ID: {user_id}")
+        print(type(project_id))
+        print(type(user_id))
+        service.add_view_permission(project_id, user_id)
+    except:
+        flash("Failed to add permissions for the project")
+        return redirect("/projects/manage")
+    return redirect("/projects/manage")
+
+
 @app.route("/projects/<int:project_id>")
 def project(project_id):
     if service.check_view_permission(project_id):
@@ -80,7 +106,7 @@ def addproject():
     user_id = service.get_user_id()
 
     try:
-        service.create_project(projectname, projectbalance, user_id)
+        service.create_project(projectname, projectbalance, int(user_id))
     except:
         flash("Project already exists or invalid input")
         return redirect("/projects/add")

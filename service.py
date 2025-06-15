@@ -2,6 +2,13 @@ from flask import session, abort
 import db
 from werkzeug.security import check_password_hash
 
+def search_user_id_by_username(username):
+    sql = "SELECT id FROM users WHERE username = ?"
+    result = db.query(sql, [username])
+    if not result:
+        return None
+    return result[0]["id"]
+
 def check_view_permission(project_id):
     user_id = session.get("user_id")
     if not user_id:
@@ -19,7 +26,7 @@ def check_view_permission(project_id):
 
 def get_project_data(project_id):
     sql = """
-    SELECT project_name, balance, project_owner_id
+    SELECT project_id, project_name, balance, project_owner_id
     FROM projects
     WHERE project_id = ?
     """
@@ -56,6 +63,10 @@ def create_project(projectname, projectbalance, user_id):
 def create_user(username, password_hash):
     sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
     db.execute(sql, [username, password_hash])
+
+def add_view_permission(project_id, user_id):
+    sql = "INSERT INTO project_visibility (user_id, project_id, view_permission, edit_permission) VALUES (?, ?, ?, ?)"
+    db.execute(sql, [user_id, project_id, True, False])
 
 def add_permissions(project_id, user_id, view_permission, edit_permission):
     sql = "INSERT INTO project_visibility (user_id, project_id, view_permission, edit_permission) VALUES (?, ?, ?, ?)"
