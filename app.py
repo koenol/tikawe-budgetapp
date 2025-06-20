@@ -12,6 +12,21 @@ app.secret_key = config.secret_key
 def index():
     return render_template("index.html")
 
+@app.route("/login", methods=["GET","POST"])
+def login():
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if service.valid_login(username, password):
+            if service.validate_user(username, password):
+                return redirect("/main")
+        else:
+            flash("Invalid username or password")
+            return redirect("/")
+
+
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
     project_id = int(request.form["project_id"])
@@ -134,21 +149,6 @@ def addproject():
         return redirect("/projects/add")
 
     return redirect("/projects")
-
-@app.route("/login", methods=["GET","POST"])
-def login():
-
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-
-        if service.validate_user(username, password):
-            session["username"] = username
-            session["user_id"] = service.get_user_id()
-            return redirect("/main")
-        else:
-            flash("Invalid username or password")
-            return redirect("/")
 
 @app.route("/logout")
 def logout():

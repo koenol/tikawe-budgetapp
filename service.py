@@ -1,6 +1,45 @@
 from flask import session, abort
 import db
 from werkzeug.security import check_password_hash
+import re
+
+def valid_login(username, password):
+    if not username or not password:
+        return False
+    username = sanitize(username)
+    password = sanitize(password)
+    if len(username) < 3 or len(username) > 12 or len(password) < 6:
+        return False
+    return True
+
+def sanitize(text):
+    if not isinstance(text, str):
+        return ""
+    text = text.strip()
+    text = re.sub(r'<.*?>', '', text)
+    text = re.sub(r'on\w+=".*?"', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'(javascript:|data:|vbscript:)', '', text, flags=re.IGNORECASE)
+    return text
+
+def validate_user(username, password):
+    sql = "SELECT id, password_hash FROM users WHERE username = ?"
+    result = db.query(sql, [username])
+    if not result:
+        return False
+    password_hash = result[0]["password_hash"]
+    return check_password_hash(password_hash, password)
+
+def validate_user(username, password):
+    sql = "SELECT id, password_hash FROM users WHERE username = ?"
+    result = db.query(sql, [username])
+    if not result:
+        return False
+    password_hash = result[0]["password_hash"]
+    if check_password_hash(password_hash, password):
+        session["user_id"] = result[0]["id"]
+        session["username"] = username
+        return True
+    return False
 
 def get_all_transactions(project_id):
     sql = """
@@ -67,13 +106,7 @@ def get_user_data(user_id):
         return None
     return result[0]
 
-def validate_user(username, password):
-    sql = "SELECT password_hash FROM users WHERE username = ?"
-    result = db.query(sql, [username])
-    if not result:
-        return False
-    password_hash = result[0]["password_hash"]
-    return check_password_hash(password_hash, password)
+
 
 def get_user_id():
     sql = "SELECT id FROM users WHERE username = ?"
