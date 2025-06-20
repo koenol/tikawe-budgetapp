@@ -7,7 +7,6 @@ def valid_login(username, password):
     if not username or not password:
         return False
     username = sanitize(username)
-    password = sanitize(password)
     if len(username) < 3 or len(username) > 12 or len(password) < 6:
         return False
     return True
@@ -20,14 +19,6 @@ def sanitize(text):
     text = re.sub(r'on\w+=".*?"', '', text, flags=re.IGNORECASE)
     text = re.sub(r'(javascript:|data:|vbscript:)', '', text, flags=re.IGNORECASE)
     return text
-
-def validate_user(username, password):
-    sql = "SELECT id, password_hash FROM users WHERE username = ?"
-    result = db.query(sql, [username])
-    if not result:
-        return False
-    password_hash = result[0]["password_hash"]
-    return check_password_hash(password_hash, password)
 
 def validate_user(username, password):
     sql = "SELECT id, password_hash FROM users WHERE username = ?"
