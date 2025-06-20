@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash
 import db
 import config
 import service
@@ -137,9 +137,6 @@ def addproject():
 
 @app.route("/login", methods=["GET","POST"])
 def login():
-
-    if request.method == "GET":
-        return render_template("login.html", next_page=request.referrer)
 
     if request.method == "POST":
         username = request.form["username"]

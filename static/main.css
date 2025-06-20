@@ -2,6 +2,24 @@ body {
     text-align: center;
 }
 
+body#login-page {
+    background-color: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+body#login-page h1 {
+    color: #1da1f2;
+    font-family: "Segoe UI";
+    font-style: italic;
+}
+
+body {
+    text-align: center;
+}
+
 .main-view .button-group-main-menu {
     display: flex;
     gap: 10px;
