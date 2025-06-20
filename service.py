@@ -2,6 +2,7 @@ from flask import session, abort
 import db
 from werkzeug.security import check_password_hash
 import re
+import secrets
 
 def valid_login(username, password):
     if not username or not password:
@@ -29,8 +30,14 @@ def validate_user(username, password):
     if check_password_hash(password_hash, password):
         session["user_id"] = result[0]["id"]
         session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
         return True
     return False
+
+def check_csrf():
+    token = session.get("csrf_token")
+    if not token or token != session.get("csrf_token"):
+        abort(403)
 
 def get_all_transactions(project_id):
     sql = """

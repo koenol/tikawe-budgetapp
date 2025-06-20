@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
 from werkzeug.security import generate_password_hash
-import db
 import config
 import service
 
