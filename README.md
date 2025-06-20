@@ -1,22 +1,3 @@
-# Välipalautus 3
-
-Huomiot:
-
--   Applikaation featureita ei ole päivitetty.
--   Applikaatio täyttää suurimman osan 3. välipalautukseen vaadittavattavasti kriteereistä, tosin hyvin heikosti koska suurin osa ajasta meni tällä viikolla koodin siistimiseen.
--   Virheentarkistusta vähän lisätty edelliseen viikkoon, mutta ei vielä täydellinen.
--   Search-funktio edelleen aika kehno, ei muutoksia tehty.
--   Käytettävyys heikkoa ja tietoturvaa ei ole vielä täysin validoitu.
--   Paljon vielä tekemättä. Onneksi on vielä aikaa.
-
-Nykyiset Toiminnot: 
-
--   Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään.
--   Käyttäjä pystyy luomaan projektin ja tapahtumia projektille, mutta tapahtumat eivät vielä tee muutoksia projektin balanceen.
--   Projektit ovat näkyvissä vain niille käyttäjille joilla on view_permission
--   Käyttäjät pystyvät lisäämään transactioneita projektiin jos heillä on edit_permission
--   Project Owner pystyy lisäämään käyttäjiä ja määrittää heille view & edit permissions
-  
 # Budget Monitor
 
 This application is a project for the University of Helsinki's TKT20019 - Databases and Web Programming course Summer/2025.
