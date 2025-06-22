@@ -122,7 +122,7 @@ def profile(user_id):
 def main():
     user_id = service.get_user_id()
     visible_projects = service.get_all_projects(user_id)
-    return render_template("main.html", projects=visible_projects)
+    return render_template("main.html", projects=visible_projects, active_page="main")
 
 @app.route("/projects")
 def projects():

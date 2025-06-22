@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Main View</title>
+        <title>Main</title>
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
@@ -10,30 +10,28 @@
         {% if session.username %}
         <p>
             Logged in as:
-            <a href="/profile/{{ session.user_id }}">{{ session.username }}</a>
+            <a id="user-identifier" href="/profile/{{ session.user_id }}"
+                >{{ session.username }}</a
+            >
         </p>
-        <div class="button-group-main-menu">
-            <form action="/main" method="get">
-                <button class="button-selected" button type="submit">
-                    Main
-                </button>
-            </form>
-            <form action="/projects" method="get">
-                <button type="submit">Projects</button>
-            </form>
-            <form action="/logout" method="get">
-                <button type="submit">Log out</button>
-            </form>
+        <nav>
+            <a
+                href="/main"
+                class="{% if active_page == 'main' %}active{% endif %}"
+                >Main</a
+            >
+            <a
+                href="/projects"
+                class="{% if active_page == 'projects' %}active{% endif %}"
+                >Projects</a
+            >
+            <a href="/logout">Logout</a>
+        </nav>
+        <div class="content">
+            <p id="active-projects">Your Active Projects</p>
+            <p id="last-login">Last Login</p>
         </div>
-        <br />
-        <hr style="width: 15%" />
-        <br />
-        <p>Active Projects:</p>
-        {% for project in projects %}
-        <a href="/projects/{{ project.project_id }}"
-            >{{ project.project_name }}</a
-        ><br />
-        {% endfor %} {% else %}
+        {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>
