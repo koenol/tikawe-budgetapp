@@ -131,6 +131,8 @@ def get_user_id():
     sql = "SELECT id FROM users WHERE username = ?"
     username = session.get("username")
     user_id = db.query(sql, [username])
+    if not user_id:
+        return None
     return user_id[0]["id"]
 
 def create_project(projectname, projectbalance, user_id):
