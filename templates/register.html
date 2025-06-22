@@ -16,9 +16,9 @@
         {% endfor %}
 
         <div class="register-form" id="register-form">
-            <form action="/create" method="post">
+            <form action="/register" method="post">
                 <p>
-                    <label for="username">Username</label>: <br />
+                    <label for="username">Username</label><br />
                     <input
                         type="text"
                         name="username"
@@ -26,10 +26,11 @@
                         minlength="3"
                         maxlength="12"
                         required
+                        value="{{ filled.username }}"
                     />
                 </p>
                 <p>
-                    <label for="password1">Password</label>: <br />
+                    <label for="password1">Password</label><br />
                     <input
                         type="password"
                         name="password1"
@@ -39,7 +40,7 @@
                     />
                 </p>
                 <p>
-                    <label for="password2">Password Again</label>: <br />
+                    <label for="password2">Password Again</label><br />
                     <input
                         type="password"
                         name="password2"

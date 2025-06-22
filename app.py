@@ -25,32 +25,35 @@ def login():
             flash("Invalid username or password")
             return redirect("/")
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
 
-@app.route("/create", methods=["POST"])
-def create():
+    if request.method == "GET":
+        return render_template("register.html", filled={})
+
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
 
     if not service.valid_username(username):
         flash("Username must be between 3 and 12 characters and it must contain only letters")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     if password1 != password2:
         flash("Passwords do not match")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     if len(password1) < 6:
         flash("Password must be at least 6 characters long")
-        return redirect("/register")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     try:
         service.create_user(username, password1)
     except:
-        flash("Username already exists")
+        flash(f"Username {username} already exists")
         return redirect("/register")
 
     return redirect("/")
