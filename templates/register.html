@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
-    <body>
+    <body id="register-page">
         <h1>Register New Account</h1>
         {% for message in get_flashed_messages() %}
         <div class="error">
@@ -14,24 +14,45 @@
             </p>
         </div>
         {% endfor %}
-        
-        <div class="register-form-container">
+
+        <div class="register-form" id="register-form">
             <form action="/create" method="post">
                 <p>
                     <label for="username">Username</label>: <br />
-                    <input type="text" name="username" id="username" />
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        minlength="3"
+                        maxlength="12"
+                        required
+                    />
                 </p>
                 <p>
                     <label for="password1">Password</label>: <br />
-                    <input type="password" name="password1" id="password1" />
+                    <input
+                        type="password"
+                        name="password1"
+                        id="password1"
+                        minlength="6"
+                        required
+                    />
                 </p>
                 <p>
                     <label for="password2">Password Again</label>: <br />
-                    <input type="password" name="password2" id="password2" />
+                    <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        minlength="6"
+                        required
+                    />
                 </p>
                 <input type="submit" value="Register" />
             </form>
+            <p>
+                <a href="/">Go back to login page</a>
+            </p>
         </div>
-        </form>
     </body>
 </html>

@@ -1,5 +1,9 @@
-body {
+body h1 {
     text-align: center;
+    color: #1da1f2;
+    font-family: "Segoe UI";
+    font-style: italic;
+    padding-top: 60px;
 }
 
 body#login-page {
@@ -10,20 +14,10 @@ body#login-page {
     align-items: center;
 }
 
-body#login-page h1 {
-    color: #1da1f2;
-    font-family: "Segoe UI";
-    font-style: italic;
-    padding-top: 60px;
-}
-
 body#login-page .login-form {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-body#login-page .login-form {
     font-family: "Segoe UI";
 }
 
@@ -33,6 +27,20 @@ body#login-page hr {
     margin: 20px;
 }
 
+body#register-page {
+    background-color: #f5f6fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+body#register-page .register-form {
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: "Segoe UI";
+}
 .main-view .button-group-main-menu {
     display: flex;
     gap: 10px;
