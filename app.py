@@ -25,6 +25,35 @@ def login():
             flash("Invalid username or password")
             return redirect("/")
 
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+@app.route("/create", methods=["POST"])
+def create():
+    username = request.form["username"]
+    password1 = request.form["password1"]
+    password2 = request.form["password2"]
+
+    if not service.valid_username(username):
+        flash("Username must be between 3 and 12 characters and it must contain only letters")
+        return redirect("/register")
+
+    if password1 != password2:
+        flash("Passwords do not match")
+        return redirect("/register")
+
+    if len(password1) < 6:
+        flash("Password must be at least 6 characters long")
+        return redirect("/register")
+
+    try:
+        service.create_user(username, password1)
+    except:
+        flash("Username already exists")
+        return redirect("/register")
+
+    return redirect("/")
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
@@ -152,30 +181,4 @@ def addproject():
 @app.route("/logout")
 def logout():
     del session["username"]
-    return redirect("/")
-
-@app.route("/register")
-def register():
-    return render_template("register.html")
-
-@app.route("/create", methods=["POST"])
-def create():
-    username = request.form["username"]
-    if not username or len(username) > 16:
-        abort(403)
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
-
-    if password1 != password2:
-        flash("Passwords do not match")
-        return redirect("/register")
-
-    password_hashed = generate_password_hash(password1)
-
-    try:
-        service.create_user(username, password_hashed)
-    except:
-        flash("Username already exists")
-        return redirect("/register")
-
     return redirect("/")

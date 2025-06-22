@@ -1,6 +1,6 @@
 from flask import session, abort
 import db
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 import re
 import secrets
 
@@ -38,6 +38,20 @@ def check_csrf():
     token = session.get("csrf_token")
     if not token or token != session.get("csrf_token"):
         abort(403)
+
+def valid_username(username):
+    if not username:
+        return False
+    username = sanitize(username)
+    if len(username) < 3 or len(username) > 12 or not username.isalpha():
+        return False
+    return True
+
+def create_user(username, password):
+    password_hash = generate_password_hash(password)
+    sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
+    db.execute(sql, [username, password_hash])
+
 
 def get_all_transactions(project_id):
     sql = """
@@ -116,9 +130,6 @@ def create_project(projectname, projectbalance, user_id):
     sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
     db.execute(sql, [projectname, projectbalance, user_id])
 
-def create_user(username, password_hash):
-    sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-    db.execute(sql, [username, password_hash])
 
 def add_view_permission(project_id, user_id):
     sql = "INSERT INTO project_visibility (user_id, project_id, view_permission, edit_permission) VALUES (?, ?, ?, ?)"
