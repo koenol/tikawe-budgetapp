@@ -29,34 +29,39 @@ def login():
 def register():
 
     if request.method == "GET":
+        session["csrf_token"] = service.create_csrf_token()
         return render_template("register.html", filled={})
 
-    username = request.form["username"]
-    password1 = request.form["password1"]
-    password2 = request.form["password2"]
 
-    if not service.valid_username(username):
-        flash("Username must be between 3 and 12 characters and it must contain only letters")
-        filled = {"username": username}
-        return render_template("register.html", filled=filled)
+    if request.method == "POST":
+        service.check_csrf()
 
-    if password1 != password2:
-        flash("Passwords do not match")
-        filled = {"username": username}
-        return render_template("register.html", filled=filled)
+        username = request.form["username"]
+        password1 = request.form["password1"]
+        password2 = request.form["password2"]
 
-    if len(password1) < 6:
-        flash("Password must be at least 6 characters long")
-        filled = {"username": username}
-        return render_template("register.html", filled=filled)
+        if not service.valid_username(username):
+            flash("Username must be between 3 and 12 characters and it must contain only letters")
+            filled = {"username": username}
+            return render_template("register.html", filled=filled)
 
-    try:
-        service.create_user(username, password1)
-    except:
-        flash(f"Username {username} already exists")
-        return redirect("/register")
+        if password1 != password2:
+            flash("Passwords do not match")
+            filled = {"username": username}
+            return render_template("register.html", filled=filled)
 
-    return redirect("/")
+        if len(password1) < 6:
+            flash("Password must be at least 6 characters long")
+            filled = {"username": username}
+            return render_template("register.html", filled=filled)
+
+        try:
+            service.create_user(username, password1)
+        except:
+            flash(f"Username {username} already exists")
+            return redirect("/register")
+
+        return redirect("/")
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():

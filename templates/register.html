@@ -28,6 +28,11 @@
                         required
                         value="{{ filled.username }}"
                     />
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ session.csrf_token }}"
+                    />
                 </p>
                 <p>
                     <label for="password1">Password</label><br />

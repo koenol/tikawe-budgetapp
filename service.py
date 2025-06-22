@@ -1,4 +1,4 @@
-from flask import session, abort
+from flask import session, abort, request
 import db
 from werkzeug.security import check_password_hash, generate_password_hash
 import re
@@ -30,13 +30,20 @@ def validate_user(username, password):
     if check_password_hash(password_hash, password):
         session["user_id"] = result[0]["id"]
         session["username"] = username
-        session["csrf_token"] = secrets.token_hex(16)
+        session["csrf_token"] = create_csrf_token()
         return True
     return False
 
-def check_csrf():
+def create_csrf_token():
     token = session.get("csrf_token")
-    if not token or token != session.get("csrf_token"):
+    if not token:
+        token = secrets.token_hex(16)
+    return token
+
+def check_csrf():
+    form_token = request.form.get("csrf_token")
+    session_token = session.get("csrf_token")
+    if not form_token or form_token != session_token:
         abort(403)
 
 def valid_username(username):
