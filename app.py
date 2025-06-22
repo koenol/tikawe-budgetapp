@@ -19,11 +19,12 @@ def login():
         password = request.form["password"]
 
         if service.valid_login(username, password):
+        
             if service.validate_user(username, password):
                 return redirect("/main")
-        else:
-            flash("Invalid username or password")
-            return redirect("/")
+        
+        flash("Invalid username or password")
+        return redirect("/")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
