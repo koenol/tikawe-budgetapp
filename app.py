@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import render_template, request, redirect, session, flash, abort
-from werkzeug.security import generate_password_hash
 import config
 import service
 
@@ -63,6 +62,19 @@ def register():
             return redirect("/register")
 
         return redirect("/")
+    
+
+@app.route("/main")
+def main():
+    service.require_login()
+
+    return render_template("main.html", active_page="main")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
@@ -117,12 +129,6 @@ def project(project_id):
 def profile(user_id):
     user_data = service.get_user_data(user_id)
     return render_template("profile.html", user=user_data)
-
-@app.route("/main")
-def main():
-    user_id = service.get_user_id()
-    visible_projects = service.get_all_projects(user_id)
-    return render_template("main.html", projects=visible_projects, active_page="main")
 
 @app.route("/projects")
 def projects():
@@ -186,8 +192,3 @@ def addproject():
         return redirect("/projects/add")
 
     return redirect("/projects")
-
-@app.route("/logout")
-def logout():
-    del session["username"]
-    return redirect("/")

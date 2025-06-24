@@ -59,6 +59,9 @@ def create_user(username, password):
     sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
     db.execute(sql, [username, password_hash])
 
+def require_login():
+    if "user_id" not in session:
+        abort(403)
 
 def get_all_transactions(project_id):
     sql = """
