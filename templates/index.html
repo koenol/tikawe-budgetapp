@@ -16,6 +16,11 @@
         {% endfor %}
         <div class="login-form" id="login-form">
             <form action="/login" method="post">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ session.csrf_token }}"
+                />
                 <p>
                     <label for="username">Username</label> <br />
                     <input

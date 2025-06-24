@@ -43,16 +43,23 @@ body #user-identifier {
     padding-bottom: 20px;
     display: inline-block;
 }
-nav a {
-    padding: 8px 16px 8px 16px;
-    text-decoration: none;
+nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+nav button {
+    padding: 8px 16px;
     color: #222;
     background: #ddd;
     border-radius: 4px;
     margin-right: 5px;
     font-size: 15px;
+    border: none;
 }
-nav a.active {
+
+nav button.active {
     background: #333;
     color: #fff;
 }

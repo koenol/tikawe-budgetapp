@@ -30,7 +30,6 @@ def validate_user(username, password):
     if check_password_hash(password_hash, password):
         session["user_id"] = result[0]["id"]
         session["username"] = username
-        session["csrf_token"] = create_csrf_token()
         return True
     return False
 

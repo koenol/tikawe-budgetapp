@@ -8,12 +8,14 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
+    session["csrf_token"] = service.create_csrf_token()
     return render_template("index.html")
 
 @app.route("/login", methods=["GET","POST"])
 def login():
 
     if request.method == "POST":
+        service.check_csrf()
         username = request.form["username"]
         password = request.form["password"]
 
@@ -70,8 +72,9 @@ def main():
 
     return render_template("main.html", active_page="main")
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 def logout():
+    service.check_csrf()
     session.clear()
     return redirect("/")
 

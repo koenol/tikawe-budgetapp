@@ -15,17 +15,20 @@
             >
         </p>
         <nav>
-            <a
-                href="/main"
-                class="{% if active_page == 'main' %}active{% endif %}"
-                >Main</a
-            >
-            <a
-                href="/projects"
-                class="{% if active_page == 'projects' %}active{% endif %}"
-                >Projects</a
-            >
-            <a href="/logout">Logout</a>
+            <form action="/main" method="get"></form>
+            <button type="submit" class="{% if active_page == 'main' %}active{% endif %}">Main</button>
+            </form>
+            <form action="/projects" method="get">
+            <button type="submit" class="{% if active_page == 'projects' %}active{% endif %}">Projects</button>
+            </form>
+            <form action="/logout" method="post">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ session.csrf_token }}"
+                />
+                <button type="submit">Logout</button>
+            </form>
         </nav>
         <div class="content">
             <p id="active-projects">Your Active Projects</p>
