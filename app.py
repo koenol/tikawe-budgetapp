@@ -70,7 +70,20 @@ def register():
 def main():
     service.require_login()
 
-    return render_template("main.html", active_page="main")
+    project_offset = request.args.get("offset", 0, type=int)
+    limit = 8
+
+    projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
+    more_available = len(projects) > limit
+    visible_projects = projects[:limit]
+
+    return render_template(
+        "main.html",
+        active_page="main",
+        projects=visible_projects,
+        has_more=more_available,
+        next_offset=project_offset + limit
+    )
 
 @app.route("/logout", methods=["POST"])
 def logout():

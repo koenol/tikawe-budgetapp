@@ -62,6 +62,20 @@ def require_login():
     if "user_id" not in session:
         abort(403)
 
+def get_latest_projects(user_id, offset=0, limit=8):
+    sql = """
+    SELECT project_id, project_name
+    FROM projects
+    WHERE project_id IN (
+        SELECT project_id
+        FROM project_visibility
+        WHERE user_id = ? AND view_permission = TRUE
+        LIMIT ? OFFSET ?
+    )
+    """
+    visible_projects = db.query(sql, [user_id, limit, offset])
+    return visible_projects
+
 def get_all_transactions(project_id):
     sql = """
     SELECT transaction_id, amount, transaction_type, user_id, date
@@ -149,19 +163,6 @@ def add_view_permission(project_id, user_id):
 def add_permissions(project_id, user_id, view_permission, edit_permission):
     sql = "INSERT INTO project_visibility (user_id, project_id, view_permission, edit_permission) VALUES (?, ?, ?, ?)"
     db.execute(sql, [user_id, project_id, view_permission, edit_permission])
-
-def get_all_projects(user_id):
-    sql = """
-    SELECT project_id, project_name
-    FROM projects
-    WHERE project_id IN (
-        SELECT project_id
-        FROM project_visibility
-        WHERE user_id = ? AND view_permission = TRUE
-    )
-    """
-    visible_projects = db.query(sql, [user_id])
-    return visible_projects
 
 def get_project_id_by_name(projectname):
     sql = "SELECT project_id FROM projects WHERE project_name = ?"
