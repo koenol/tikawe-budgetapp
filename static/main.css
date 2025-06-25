@@ -68,6 +68,7 @@ body div.content {
     width: 200px;
     height: 400px;
     background: #f0f0f0;
+    font-size: 13px;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
@@ -76,6 +77,28 @@ body div.content {
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
+}
+
+body div.content #active-projects {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+body div.content button {
+    padding: 6px 11px;
+    color: #222;
+    background: #ddd;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-size: 11px;
+    border: none;
+    margin-bottom: 7px;
+    margin-top: 30px;
+}
+
+body div.content button.active {
+    background: #333;
+    color: #fff;
 }
 
 body .content #active-projects {

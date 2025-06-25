@@ -62,7 +62,7 @@ def require_login():
     if "user_id" not in session:
         abort(403)
 
-def get_latest_projects(user_id, offset=0, limit=8):
+def get_latest_projects(user_id, offset=0, limit=10):
     sql = """
     SELECT project_id, project_name
     FROM projects

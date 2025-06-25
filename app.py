@@ -71,7 +71,7 @@ def main():
     service.require_login()
 
     project_offset = request.args.get("offset", 0, type=int)
-    limit = 8
+    limit = 10
 
     projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
     more_available = len(projects) > limit
