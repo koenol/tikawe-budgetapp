@@ -103,8 +103,39 @@ def projects():
         active_page="projects",
         projects=projects[:limit],
         has_more=len(projects) > limit,
-        next_offset=project_offset + limit
+        next_offset=project_offset + limit,
+        search_projects=None,
+        search_has_more=False,
+        next_search_offset=0,
     )
+
+@app.route("/projects/search")
+def search_project():
+    service.require_login()
+
+    project_offset = request.args.get("offset", 0, type=int)
+    limit = 10
+    projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
+
+    projectname = request.args.get("projectname")
+    project_offset_search = request.args.get("project_search_offset", 0, type=int)
+    search_limit = 20
+
+    searched_projects = service.search_project_by_name(
+        session["user_id"], projectname, offset=project_offset_search, limit=search_limit + 1
+    )
+
+    return render_template(
+        "projects.html",
+        active_page="projects",
+        projects=projects[:limit],
+        has_more=len(projects) > limit,
+        next_offset=project_offset + limit,
+        search_projects=searched_projects[:search_limit],
+        search_has_more=len(searched_projects) > search_limit,
+        next_search_offset=project_offset_search + search_limit,
+    )
+
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
@@ -173,14 +204,6 @@ def update_balance():
         projectname = request.form["projectname"]
         service.update_balance_by_name(projectname, newbalance)
         return redirect("/projects/manage")
-
-@app.route("/projects/search", methods=["GET", "POST"])
-def search_project():
-    if request.method == "POST":
-        projectname = request.form["projectname"]
-        user_id = service.get_user_id()
-        project_data = service.search_project_by_name(user_id, projectname)
-        return render_template("manage.html", items=project_data)
     
 @app.route("/projects/add")
 def add_projects():

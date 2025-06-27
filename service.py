@@ -76,6 +76,24 @@ def get_latest_projects(user_id, offset=0, limit=10):
     visible_projects = db.query(sql, [user_id, limit, offset])
     return visible_projects
 
+def search_project_by_name(user_id, projectname, offset=0, limit=20):
+    projectname_sanitized = sanitize(projectname)
+    projectname_like = f"%{projectname_sanitized}%"
+
+    sql = """
+    SELECT project_id, project_name
+    FROM projects
+    WHERE project_name LIKE ?
+      AND project_id IN (
+        SELECT project_id
+        FROM project_visibility
+        WHERE user_id = ? AND view_permission = TRUE
+        LIMIT ? OFFSET ?
+    )
+    """
+    visible_projects = db.query(sql, [projectname_like, user_id, limit, offset])
+    return visible_projects
+
 def get_all_transactions(project_id):
     sql = """
     SELECT transaction_id, amount, transaction_type, user_id, date
@@ -168,21 +186,6 @@ def get_project_id_by_name(projectname):
     sql = "SELECT project_id FROM projects WHERE project_name = ?"
     result = db.query(sql, [projectname])
     return result[0]["project_id"]
-
-def search_project_by_name(user_id, projectname):
-    sql = """
-    SELECT project_name, balance
-    FROM projects
-    WHERE project_name = ?
-    AND project_id IN (
-        SELECT project_id
-        FROM project_visibility
-        WHERE user_id = ? AND view_permission = TRUE
-    )
-    """
-    search_result = db.query(sql, [projectname, user_id])
-    project_info = [(row["project_name"], row["balance"]) for row in search_result]
-    return project_info
 
 def delete_project_by_name(projectname):
     sql = "DELETE FROM projects WHERE project_name = ?"
