@@ -74,14 +74,12 @@ def main():
     limit = 10
 
     projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
-    more_available = len(projects) > limit
-    visible_projects = projects[:limit]
 
     return render_template(
         "main.html",
         active_page="main",
-        projects=visible_projects,
-        has_more=more_available,
+        projects=projects[:limit],
+        has_more=len(projects) > limit,
         next_offset=project_offset + limit
     )
 
