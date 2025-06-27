@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Simple Budget App - Projects</title>
+        <title>Projects</title>
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
-    <body class="main-view">
-        <h1>Projects</h1>
+    <body class="projects-view">
+        <h1>Simple Budget App - Projects</h1>
         {% if session.username %}
         <p>
             Logged in as:
-            <a href="/profile/{{ session.user_id }}">{{ session.username }}</a>
+            <a id="user-identifier" href="/profile/{{ session.user_id }}"
+                >{{ session.username }}</a
+            >
         </p>
-        <div class="button-group-main-menu">
+        <nav>
             <form action="/main" method="get">
-                <button type="submit">Main</button>
+                <button
+                    type="submit"
+                    class="{% if active_page == 'main' %}active{% endif %}"
+                >
+                    Main
+                </button>
             </form>
             <form action="/projects" method="get">
-                <button class="button-selected" button type="submit">
+                <button
+                    type="submit"
+                    class="{% if active_page == 'projects' %}active{% endif %}"
+                >
                     Projects
                 </button>
             </form>
-            <form action="/logout" method="get">
-                <button type="submit">Log out</button>
+            <form action="/logout" method="post">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ session.csrf_token }}"
+                />
+                <button type="submit">Logout</button>
             </form>
-        </div>
-        <br />
-        <hr style="width: 15%" />
-        <br />
-        <div class="button-group-main-menu">
+        </nav>
+        <div class="content">
+            <p id="active-projects">Your Latest Projects</p>
+            {% for project in projects %}
+            <a href="/projects/{{ project.project_id }}"
+                >{{ project.project_name }}</a
+            ><br />
+            {% endfor %} {% if has_more %}
             <form action="/projects" method="get">
-                <button class="button-selected" button type="submit">
-                    View
-                </button>
+                <input type="hidden" name="offset" value="{{ next_offset }}" />
+                <button type="submit">Show More</button>
             </form>
-
-            <form action="/projects/add" method="get">
-                <button type="submit">Add</button>
-            </form>
-
-            <form action="/projects/manage" method="get">
-                <button type="submit">Manage</button>
-            </form>
+            {% endif %}
+            <p id="last-login">Last Login</p>
         </div>
-        <br />
-        <hr style="width: 25%" />
-        <br />
-        <p>Active Projects:</p>
-        {% for project in projects %}
-        <a href="/projects/{{ project.project_id }}"
-            >{{ project.project_name }}</a
-        ><br />
-        {% endfor %} {% else %}
+        {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>

@@ -89,6 +89,22 @@ def logout():
     session.clear()
     return redirect("/")
 
+@app.route("/projects")
+def projects():
+    service.require_login()
+
+    project_offset = request.args.get("offset", 0, type=int)
+    limit = 10
+
+    projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
+
+    return render_template(
+        "projects.html",
+        active_page="projects",
+        projects=projects[:limit],
+        has_more=len(projects) > limit,
+        next_offset=project_offset + limit
+    )
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
@@ -143,12 +159,6 @@ def project(project_id):
 def profile(user_id):
     user_data = service.get_user_data(user_id)
     return render_template("profile.html", user=user_data)
-
-@app.route("/projects")
-def projects():
-    user_id = service.get_user_id()
-    visible_projects = service.get_all_projects(user_id)
-    return render_template("projects.html", projects=visible_projects)
 
 @app.route("/projects/delete", methods=["POST"])
 def delete_project():
