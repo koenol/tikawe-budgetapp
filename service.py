@@ -84,14 +84,9 @@ def search_project_by_name(user_id, projectname, offset=0, limit=20):
     SELECT project_id, project_name
     FROM projects
     WHERE project_name LIKE ?
-      AND project_id IN (
-        SELECT project_id
-        FROM project_visibility
-        WHERE user_id = ? AND view_permission = TRUE
-        LIMIT ? OFFSET ?
-    )
+    LIMIT ? OFFSET ?
     """
-    visible_projects = db.query(sql, [projectname_like, user_id, limit, offset])
+    visible_projects = db.query(sql, [projectname_like, limit, offset])
     return visible_projects
 
 def get_all_transactions(project_id):
