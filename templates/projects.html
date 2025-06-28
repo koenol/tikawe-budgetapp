@@ -62,37 +62,32 @@
                 </p>
                 <input type="submit" value="Search" />
             </form>
-            <form action="/projects/create" method="get">
+            <form action="/projects/add-project" method="get">
                 <button type="submit" id="create-project-btn">
-                    Create New Project
+                    Add New Project
                 </button>
             </form>
-            {% if search_projects is not none and search_projects|length > 0 %}
-            <div id="search-results">
-                <p id="search-projects">Results:</p>
-                {% for project in search_projects %}
-                <a href="/projects/{{ project.project_id }}"
-                    >{{ project.project_name }}</a
-                ><br />
-                {% endfor %} {% if search_has_more %}
-                <form action="/projects/search" method="get">
-                    <input type="hidden" name="projectname" />
-                    <input
-                        type="hidden"
-                        name="project_search_offset"
-                        value="{{ next_search_offset }}"
-                    />
-                    <button type="submit">Show More</button>
-                </form>
-                {% endif %}
-            </div>
-            {% elif search_projects is not none %}
-            <div id="search-results">
-                <p>No projects found.</p>
-            </div>
-            {% endif %}
+            {% if search_projects is not none %}
+            <p id="search-projects">Results:</p>
+            {% for project in search_projects %}
+            <a
+                id="search-project-list"
+                href="/projects/{{ project.project_id }}"
+            >
+                {{ project.project_name }}
+            </a>
+            {% endfor %} {% if search_has_more %}
+            <form action="/projects/search" method="get">
+                <input type="hidden" name="projectname" />
+                <input
+                    type="hidden"
+                    name="project_search_offset"
+                    value="{{ next_search_offset }}"
+                />
+                <button type="submit">Show More</button>
+            </form>
         </div>
-        {% else %}
+        {% endif %} {% endif %} {% else %}
         <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>

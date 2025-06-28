@@ -178,6 +178,29 @@ def project(project_id):
             limited_view=True
     )
 
+@app.route("/projects/add-project")
+def add_projects():
+    service.require_login()
+
+    project_offset = request.args.get("offset", 0, type=int)
+    limit = 10
+
+    projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
+
+    return render_template(
+        "new_project.html",
+        active_page="projects",
+        projects=projects[:limit],
+        has_more=len(projects) > limit,
+        next_offset=project_offset + limit,
+        search_projects=None,
+        search_has_more=False,
+        next_search_offset=0,
+    )
+
+
+
+
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
     project_id = int(request.form["project_id"])
@@ -234,10 +257,6 @@ def update_balance():
         service.update_balance_by_name(projectname, newbalance)
         return redirect("/projects/manage")
     
-@app.route("/projects/add")
-def add_projects():
-    return render_template("new_project.html")
-
 @app.route("/projects/manage")
 def manage_projects():
     return render_template("manage.html")
