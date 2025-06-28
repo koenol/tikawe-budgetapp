@@ -58,21 +58,34 @@
             {% if limited_view %}
             <ul>
                 <p>
-                    Project Name: {{ project_data.project_name }} ({{
-                    project_data.project_id }})
+                    Project Name: {{ project_data.project_name }}
+                    <span id="pid">(pid: {{ project_data.project_id }})</span>
                 </p>
-                <p>Project Owner ID: {{ project_data.project_owner_id }}</p>
+                <p>
+                    Project Owner: {{ project_owner_name.username }}
+                    <span id="uid"
+                        >(uid: {{ project_data.project_owner_id }})</span
+                    >
+                </p>
             </ul>
 
             <p>You have limited view permission for this project.</p>
+            <form action="/projects" method="get">
+                <button type="submit">Back</button>
+            </form>
             <p>{% else %}</p>
 
             <ul>
                 <p>
-                    Project Name: {{ project_data.project_name }} ({{
-                    project_data.project_id }})
+                    Project Name: {{ project_data.project_name }}
+                    <span id="pid">(pid: {{ project_data.project_id }})</span>
                 </p>
-                <p>Project Owner ID: {{ project_data.project_owner_id }}</p>
+                <p>
+                    Project Owner: {{ project_owner_name.username }}
+                    <span id="uid"
+                        >(uid: {{ project_data.project_owner_id }})</span
+                    >
+                </p>
                 <p>Balance: {{ project_data.balance }}</p>
             </ul>
             {% endif %}

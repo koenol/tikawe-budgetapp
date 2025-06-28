@@ -62,6 +62,11 @@
                 </p>
                 <input type="submit" value="Search" />
             </form>
+            <form action="/projects/create" method="get">
+                <button type="submit" id="create-project-btn">
+                    Create New Project
+                </button>
+            </form>
             {% if search_projects is not none and search_projects|length > 0 %}
             <div id="search-results">
                 <p id="search-projects">Results:</p>

@@ -150,7 +150,8 @@ body.projects-view div.content-projects {
     width: 20px;
 }
 
-.content-projects form input[type="submit"] {
+.content-projects form input[type="submit"],
+.content-projects form button[type="submit"] {
     font-size: 10px;
     padding: 2px 5px;
     width: 80px;
@@ -158,9 +159,19 @@ body.projects-view div.content-projects {
     margin-top: 28px;
     margin-left: 10px;
 }
+#create-project-btn {
+    font-size: 10px;
+    min-width: 160px;
+    height: 20px;
+}
 
 #search-results {
     margin-top: 5px;
+}
+
+#pid,
+#uid {
+    font-size: 8px;
 }
 
 .error {

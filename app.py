@@ -146,6 +146,7 @@ def project(project_id):
 
         projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
         fetched_project_data = service.get_project_data(project_id)
+        project_owner_name = service.get_user_data(fetched_project_data["project_owner_id"])
 
         return render_template(
             "project.html",
@@ -154,6 +155,7 @@ def project(project_id):
             has_more=len(projects) > limit,
             next_offset=project_offset + limit,
             project_data=fetched_project_data,
+            project_owner_name=project_owner_name,
             limited_view=False
     )
     else:
@@ -162,6 +164,8 @@ def project(project_id):
 
         projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
         fetched_project_data = service.get_project_data_limited(project_id)
+        project_owner_name = service.get_user_data(fetched_project_data["project_owner_id"])
+
 
         return render_template(
             "project.html",
@@ -170,6 +174,7 @@ def project(project_id):
             has_more=len(projects) > limit,
             next_offset=project_offset + limit,
             project_data=fetched_project_data,
+            project_owner_name=project_owner_name,
             limited_view=True
     )
 
