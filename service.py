@@ -89,6 +89,45 @@ def search_project_by_name(user_id, projectname, offset=0, limit=20):
     visible_projects = db.query(sql, [projectname_like, limit, offset])
     return visible_projects
 
+def check_view_permission(project_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        abort(403)
+
+    sql = """
+    SELECT view_permission
+    FROM project_visibility
+    WHERE user_id = ? AND project_id = ?
+    """
+    result = db.query(sql, [user_id, project_id])
+    if not result:
+        return False
+    return result[0]["view_permission"]
+
+def get_project_data(project_id):
+    sql = """
+    SELECT project_id, project_name, balance, project_owner_id
+    FROM projects
+    WHERE project_id = ?
+    """
+    result = db.query(sql, [project_id])
+    if not result:
+        return None
+    return result[0]
+
+
+def get_project_data_limited(project_id):
+    sql = """
+    SELECT project_id, project_name, project_owner_id
+    FROM projects
+    WHERE project_id = ?
+    """
+    result = db.query(sql, [project_id])
+    if not result:
+        return None
+    return result[0]
+
+
 def get_all_transactions(project_id):
     sql = """
     SELECT transaction_id, amount, transaction_type, user_id, date
@@ -111,21 +150,6 @@ def search_user_id_by_username(username):
         return None
     return result[0]["id"]
 
-def check_view_permission(project_id):
-    user_id = session.get("user_id")
-    if not user_id:
-        abort(404)
-
-    sql = """
-    SELECT view_permission
-    FROM project_visibility
-    WHERE user_id = ? AND project_id = ?
-    """
-    result = db.query(sql, [user_id, project_id])
-    if not result:
-        return False
-    return result[0]["view_permission"]
-
 def get_edit_permissions(project_id):
     sql = """
     SELECT user_id
@@ -135,17 +159,6 @@ def get_edit_permissions(project_id):
     result = db.query(sql, [project_id])
 
     return [row["user_id"] for row in result]
-
-def get_project_data(project_id):
-    sql = """
-    SELECT project_id, project_name, balance, project_owner_id
-    FROM projects
-    WHERE project_id = ?
-    """
-    result = db.query(sql, [project_id])
-    if not result:
-        return None
-    return result[0]
 
 def get_user_data(user_id):
     sql = "SELECT username  FROM users WHERE id = ?"

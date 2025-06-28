@@ -1,137 +1,84 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Simple Budget App - Project Info</title>
+        <title>Project Data</title>
         <link rel="stylesheet" href="../static/main.css" />
     </head>
 
-    <body class="main-view">
-        <h1>Projects - Project Info</h1>
+    <body class="projects-view">
+        <h1>Simple Budget App - Project</h1>
         {% if session.username %}
         <p>
             Logged in as:
-            <a href="/profile/{{ session.user_id }}">{{ session.username }}</a>
+            <a id="user-identifier" href="/profile/{{ session.user_id }}"
+                >{{ session.username }}</a
+            >
         </p>
-        <div class="button-group-main-menu">
+        <nav>
             <form action="/main" method="get">
-                <button type="submit">Main</button>
-            </form>
-            <form action="/projects" method="get">
-                <button type="submit">Projects</button>
-            </form>
-            <form action="/logout" method="get">
-                <button type="submit">Log out</button>
-            </form>
-        </div>
-        <br />
-        <hr style="width: 15%" />
-        <br />
-        <div class="button-group-main-menu">
-            <form action="/projects" method="get">
-                <button type="submit">View</button>
-            </form>
-
-            <form action="/projects/add" method="get">
-                <button type="submit">Add</button>
-            </form>
-
-            <form action="/projects/manage" method="get">
-                <button type="submit">Manage</button>
-            </form>
-        </div>
-        <br />
-        <hr style="width: 25%" />
-        <br />
-        <div class="project">
-            <h2>Project {{ project.project_name }}</h2>
-            <p>
-                <b>Owner:</b>
-                <a href="/profile/{{ project.project_owner_id }}"
-                    >{{ project_owner.username }}</a
+                <button
+                    type="submit"
+                    class="{% if active_page == 'main' %}active{% endif %}"
                 >
-            </p>
-            <p><b>Balance:</b> {{ project.balance }}<br /></p>
-            <p><b>Project Status:</b></p>
-            <br />
-            <div id="all-transactions-list">
-                <h3>All Transactions</h3>
-                <ul id="all-transactions-list">
-                    {% for transaction in project_transactions %}
-                    <li>
-                        Amount: {{ transaction.amount }}
-                        Type: {{ transaction.transaction_type }}
-                        Date: {{ transaction.date }}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                    Main
+                </button>
+            </form>
+            <form action="/projects" method="get">
+                <button
+                    type="submit"
+                    class="{% if active_page == 'projects' %}active{% endif %}"
+                >
+                    Projects
+                </button>
+            </form>
+            <form action="/logout" method="post">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ session.csrf_token }}"
+                />
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
+        <div class="content">
+            <p id="active-projects">Your Latest Projects</p>
+            {% for project in projects %}
+            <a href="/projects/{{ project.project_id }}"
+                >{{ project.project_name }}</a
+            ><br />
+            {% endfor %} {% if has_more %}
+            <form action="/projects" method="get">
+                <input type="hidden" name="offset" value="{{ next_offset }}" />
+                <button type="submit">Show More</button>
+            </form>
+            {% endif %}
+            <p id="last-login">Last Login</p>
+        </div>
+        <div class="content-projects">
+            {% if limited_view %}
+            <ul>
+                <p>
+                    Project Name: {{ project_data.project_name }} ({{
+                    project_data.project_id }})
+                </p>
+                <p>Project Owner ID: {{ project_data.project_owner_id }}</p>
+            </ul>
 
-            <div id="income-transactions-list">
-                <h3>Income Transactions</h3>
-                <ul id="income-transactions-list">
-                    {% for transaction in project_transactions %}
-                        {% if transaction.transaction_type == 'income' %}
-                            {% set found_income = true %}
-                            <li>
-                                Amount: {{ transaction.amount }}
-                                Type: {{ transaction.transaction_type }}
-                                Date: {{ transaction.date }}
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
+            <p>You have limited view permission for this project.</p>
+            <p>{% else %}</p>
 
-            <div id="expense-transactions-list">
-                <h3>Expense Transactions</h3>
-                <ul id="expense-transactions-list">
-                    {% for transaction in project_transactions %}
-                        {% if transaction.transaction_type == 'expense' %}
-                            {% set found_expense = true %}
-                            <li>
-                                Amount: {{ transaction.amount }}
-                                Type: {{ transaction.transaction_type }}
-                                Date: {{ transaction.date }}
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-            {% if session.user_id in project_edit_rights %}
-            </p>
-            <div class="create-transaction-form">
-                <form action="/create_transaction" method="post">
-                    <label for="amount">Amount:</label>
-                    <input type="number" id="amount" name="amount" step="1" required />
-                    <br />
-                    <label for="type">Type:</label>
-                    <select id="type" name="type" required>
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
-                    </select>
-                    <br />
-                    <input type="hidden" name="project_id" value="{{ project.project_id }}">
-                    <input type="hidden" name="user_id" value="{{ session.user_id }}">
-                    <button type="submit">Create Transaction</button>
-                </form>
-            </div>
-            {% endif %} {% if session.user_id == project.project_owner_id %}
-            <div class="add-permission-form">
-                <form action="/add_view_permission" method="post">
-                    <input
-                        type="hidden"
-                        name="project_id"
-                        value="{{ project.project_id }}"
-                    />
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required />
-                    <br />
-
-                    <button type="submit">Add View Permission</button>
-                </form>
-            </div>
+            <ul>
+                <p>
+                    Project Name: {{ project_data.project_name }} ({{
+                    project_data.project_id }})
+                </p>
+                <p>Project Owner ID: {{ project_data.project_owner_id }}</p>
+                <p>Balance: {{ project_data.balance }}</p>
+            </ul>
             {% endif %}
         </div>
+        {% else %}
+        <p>You must be logged in to see main view.</p>
         {% endif %}
     </body>
 </html>

@@ -58,12 +58,7 @@
             <form action="/projects/search" method="get">
                 <p>
                     <label for="projectname">Project Name</label>: <br />
-                    <input
-                        type="text"
-                        name="projectname"
-                        id="projectname"
-                        value="{{ request.args.get('projectname', '') }}"
-                    />
+                    <input type="text" name="projectname" id="projectname" />
                 </p>
                 <input type="submit" value="Search" />
             </form>
@@ -76,11 +71,7 @@
                 ><br />
                 {% endfor %} {% if search_has_more %}
                 <form action="/projects/search" method="get">
-                    <input
-                        type="hidden"
-                        name="projectname"
-                        value="{{ request.args.get('projectname', '') }}"
-                    />
+                    <input type="hidden" name="projectname" />
                     <input
                         type="hidden"
                         name="project_search_offset"

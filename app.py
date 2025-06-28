@@ -136,6 +136,42 @@ def search_project():
         next_search_offset=project_offset_search + search_limit,
     )
 
+@app.route("/projects/<int:project_id>")
+def project(project_id):
+    service.require_login()
+
+    if service.check_view_permission(project_id):
+        project_offset = request.args.get("offset", 0, type=int)
+        limit = 10
+
+        projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
+        fetched_project_data = service.get_project_data(project_id)
+
+        return render_template(
+            "project.html",
+            active_page="projects",
+            projects=projects[:limit],
+            has_more=len(projects) > limit,
+            next_offset=project_offset + limit,
+            project_data=fetched_project_data,
+            limited_view=False
+    )
+    else:
+        project_offset = request.args.get("offset", 0, type=int)
+        limit = 10
+
+        projects = service.get_latest_projects(session["user_id"], project_offset, limit + 1)
+        fetched_project_data = service.get_project_data_limited(project_id)
+
+        return render_template(
+            "project.html",
+            active_page="projects",
+            projects=projects[:limit],
+            has_more=len(projects) > limit,
+            next_offset=project_offset + limit,
+            project_data=fetched_project_data,
+            limited_view=True
+    )
 
 @app.route("/create_transaction", methods=["POST"])
 def create_transaction():
@@ -173,18 +209,6 @@ def add_view_permissions():
         flash("Failed to add permissions for the project")
         return redirect("/projects/manage")
     return redirect("/projects/manage")
-
-
-@app.route("/projects/<int:project_id>")
-def project(project_id):
-    if service.check_view_permission(project_id):
-        project_data = service.get_project_data(project_id)
-        project_owner = service.get_user_data(project_data[3])
-        project_edit_rights = service.get_edit_permissions(project_id)
-        project_transactions = service.get_all_transactions(project_id)
-        return render_template("project.html", project=project_data, project_owner=project_owner, project_edit_rights=project_edit_rights, project_transactions=project_transactions)
-    else:
-        abort(403)
 
 @app.route("/profile/<int:user_id>")
 def profile(user_id):
