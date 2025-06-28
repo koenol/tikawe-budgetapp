@@ -1,3 +1,11 @@
+--- DO NOT REVIEW: SEE LABTOOL MESSAGES ---
+
+
+
+
+
+
+
 # Budget Monitor
 
 This application is a project for the University of Helsinki's TKT20019 - Databases and Web Programming course Summer/2025.
