@@ -18,7 +18,8 @@ CREATE TABLE projects (
     project_id INTEGER PRIMARY KEY,
     project_name TEXT UNIQUE NOT NULL,
     project_owner_id INTEGER REFERENCES users NOT NULL,
-    balance INTEGER NOT NULL DEFAULT 0,
+    balance INTEGER,
+    project_desc TEXT,
     total_transactions INTEGER NOT NULL DEFAULT 0
 );
 

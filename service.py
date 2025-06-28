@@ -127,6 +127,46 @@ def get_project_data_limited(project_id):
         return None
     return result[0]
 
+def convert_to_cents(amount):
+    if isinstance(amount, int):
+        return amount * 100
+    if isinstance(amount, str) and amount.isdigit():
+        return int(amount) * 100
+    return 0
+
+def create_project(projectname, user_id, desc=None):
+    sql = "INSERT INTO projects (project_name, project_owner_id, project_desc) VALUES (?, ?, ?)"
+    db.execute(sql, [projectname, user_id, desc])
+
+def init_project(projectname, user_id, balance=0):
+    project_id = get_project_id_by_name(projectname)
+    create_transaction(project_id, balance, "income", "lol", user_id)
+    print("updating balance")
+    update_project_balance(project_id, balance)
+
+def get_project_id_by_name(projectname):
+    sql = "SELECT project_id FROM projects WHERE project_name = ?"
+    result = db.query(sql, [projectname])
+    return result[0]["project_id"]
+
+def create_transaction(project_id, amount, transaction_type, transaction_message, user_id):
+    sql = """
+    INSERT INTO transactions (user_id, amount, transaction_type, transaction_message, project_id, date)
+    VALUES (?, ?, ?, ?, ?, datetime('now'))
+    """
+    db.execute(sql, [user_id, amount, transaction_type, transaction_message, project_id])
+
+def update_project_balance(project_id):
+    sql = """
+    UPDATE projects
+    SET balance = (
+        SELECT SUM(amount)
+        FROM transactions
+        WHERE project_id = ?
+    )
+    WHERE project_id = ?
+    """
+    db.execute(sql, [project_id, project_id])
 
 def get_all_transactions(project_id):
     sql = """
@@ -135,13 +175,6 @@ def get_all_transactions(project_id):
     WHERE project_id = ?
     """
     return db.query(sql, [project_id])
-
-def create_transaction(project_id, amount, type, user_id):
-    sql = """
-    INSERT INTO transactions (project_id, amount, transaction_type, user_id, date)
-    VALUES (?, ?, ?, ?, datetime('now'))
-    """
-    db.execute(sql, [project_id, amount, type, user_id])
 
 def search_user_id_by_username(username):
     sql = "SELECT id FROM users WHERE username = ?"
@@ -177,9 +210,6 @@ def get_user_id():
         return None
     return user_id[0]["id"]
 
-def create_project(projectname, projectbalance, user_id):
-    sql = "INSERT INTO projects (project_name, balance, project_owner_id) VALUES (?, ?, ?)"
-    db.execute(sql, [projectname, projectbalance, user_id])
 
 
 def add_view_permission(project_id, user_id):
@@ -189,11 +219,6 @@ def add_view_permission(project_id, user_id):
 def add_permissions(project_id, user_id, view_permission, edit_permission):
     sql = "INSERT INTO project_visibility (user_id, project_id, view_permission, edit_permission) VALUES (?, ?, ?, ?)"
     db.execute(sql, [user_id, project_id, view_permission, edit_permission])
-
-def get_project_id_by_name(projectname):
-    sql = "SELECT project_id FROM projects WHERE project_name = ?"
-    result = db.query(sql, [projectname])
-    return result[0]["project_id"]
 
 def delete_project_by_name(projectname):
     sql = "DELETE FROM projects WHERE project_name = ?"

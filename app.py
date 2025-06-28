@@ -198,6 +198,48 @@ def add_projects():
         next_search_offset=0,
     )
 
+@app.route("/projects/create-project", methods=["POST"])
+def create_project():
+    service.require_login()
+    service.check_csrf()
+
+    projectname = request.form["projectname"]
+    balance = request.form["balance"]
+    desc = request.form["description"]
+
+    if not projectname:
+        flash("Project name is required")
+        return redirect("/projects/add-project")
+
+    if not balance.isdigit() or int(balance) < 0:
+        flash("Balance must be a non-negative number")
+        return redirect("/projects/add-project")
+    
+    if len(balance) > 1 and balance.startswith("0"):
+        flash("Balance cannot have leading zeros")
+        return redirect("/projects/add-project")
+    
+    if len(desc) > 150:
+        flash ("Description must be less than 150 characters")
+        return redirect("/projects/add-project")
+    if len(projectname) >= 3 and len(projectname) <= 16:       
+
+        try:
+            service.create_project(projectname, session["user_id"], desc)
+        except:
+            flash(f"Project {projectname} already exists")
+            return redirect("/projects/add-project")
+        
+        try:
+            balance_cents = service.convert_to_cents(balance)
+            service.init_project(projectname, balance_cents, session["user_id"])
+            return redirect("/projects")
+        except:
+            flash(f"Failed to initialize project, please contact admin")
+            return redirect("/projects/add-project")
+    
+    flash("Project name must be between 3 and 16 characters")
+    return redirect("/projects/add-project")
 
 
 
@@ -257,33 +299,5 @@ def update_balance():
         service.update_balance_by_name(projectname, newbalance)
         return redirect("/projects/manage")
     
-@app.route("/projects/manage")
-def manage_projects():
-    return render_template("manage.html")
-
-@app.route("/projects/addproject", methods=["POST"])
-def addproject():
 
 
-    projectname = request.form["project-name"]
-    if not projectname:
-        flash("Project name is required")
-        return redirect("/projects/add")
-    projectbalance = request.form["project-balance"]
-
-    user_id = service.get_user_id()
-
-    try:
-        service.create_project(projectname, projectbalance, int(user_id))
-    except:
-        flash("Project already exists or invalid input")
-        return redirect("/projects/add")
-
-    try:
-        project_id = service.get_project_id_by_name(projectname)
-        service.add_permissions(project_id, user_id, True, True)
-    except:
-        flash("Failed to add permissions for the project")
-        return redirect("/projects/add")
-
-    return redirect("/projects")

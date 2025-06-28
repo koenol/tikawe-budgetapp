@@ -82,6 +82,7 @@
                     <input
                         type="text"
                         name="projectname"
+                        minlength="3"
                         maxlength="16"
                         id="projectname"
                         required
@@ -104,10 +105,17 @@
                         name="description"
                         id="description"
                         maxlength="150"
-                        required
                     ></textarea>
                 </p>
+
                 <input type="submit" value="Create Project" />
+                {% for message in get_flashed_messages() %}
+                <div class="error">
+                    <p>
+                        <b>{{ message }}</b>
+                    </p>
+                </div>
+                {% endfor %}
             </form>
         </div>
         {% else %}
